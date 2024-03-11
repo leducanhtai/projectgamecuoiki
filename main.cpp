@@ -1,57 +1,93 @@
 #include <iostream>
 #include "src/include/SDL2/SDL.h"
+#include <stdio.h>
 
-using std::cin;
-using std::cout;
 const int SCREEN_WIDTH = 600;
 const int SCREEN_HEIGHT = 900;
-SDL_Window* gwindow = NULL;
+const int SPRITE_SPEED = 5;
+bool init();
+bool loadMedia();
+void close();
+SDL_Window* gWindow = NULL;
 SDL_Surface* gScreenSurface = NULL;
-SDL_Surface* BackGround = NULL;
+SDL_Surface* gBackground = NULL;
+SDL_Surface* gSprite = NULL;
+int spriteX = SCREEN_WIDTH / 2;
+int spriteY = SCREEN_HEIGHT - 100;
 
 bool init() {
-    if (SDL_Init(SDL_INIT_VIDEO)<0) {
-        cout<<"SDL Could not Initialize, SDL Error:\n"<<SDL_GetError();
-        return false;
-    }
-    else {
-        gwindow = SDL_CreateWindow("SDL Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-        if (gwindow == NULL) {
-            cout<<"Window could not be created\nSDL Error:\n"<<SDL_GetError();
-            return false;
-        }
-        else {
-            gScreenSurface = SDL_GetWindowSurface(gwindow);
-        }
-    }
-    return true;
-}
-bool loadmedia(const char path[], SDL_Surface*& Carry_Surface) {
-    Carry_Surface = SDL_LoadBMP(path);
-    return Carry_Surface != NULL;
-}
-void stay_window() {
-    SDL_Event e;
-    bool quit = false;
-    while(!quit) {
-        while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_QUIT) {
-                quit = true;
-            } 
+    bool success = true;
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+        success = false;
+    } else {
+        gWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+        if (gWindow == NULL) {
+            printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+            success = false;
+        } else {
+            gScreenSurface = SDL_GetWindowSurface(gWindow);
         }
     }
+    return success;
 }
+
+bool loadMedia() {
+    bool success = true;
+    gBackground = SDL_LoadBMP("img/farm.bmp");
+    if (gBackground == NULL) {
+        printf("Unable to load background image! SDL Error: %s\n", SDL_GetError());
+        success = false;
+    }
+    gSprite = SDL_LoadBMP("img/sprite.bmp");
+    if (gSprite == NULL) {
+        printf("Unable to load sprite image! SDL Error: %s\n", SDL_GetError());
+        success = false;
+    }
+
+    return success;
+}
+
+void close() {
+    SDL_FreeSurface(gBackground);
+    gBackground = NULL;
+    SDL_FreeSurface(gSprite);
+    gSprite = NULL;
+    SDL_DestroyWindow(gWindow);
+    gWindow = NULL;
+    SDL_Quit();
+}
+
 int main(int argc, char* args[]) {
-    if (init()) {
-        BackGround = SDL_LoadBMP("img/farm.bmp");
-        if (BackGround != NULL) {
-            SDL_BlitSurface(BackGround, NULL, gScreenSurface, NULL);
-            SDL_UpdateWindowSurface(gwindow);
+    if (!init()) {
+        printf("Failed to initialize!\n");
+    } else {
+        if (!loadMedia()) {
+            printf("Failed to load media!\n");
+        } else {
+            bool quit = false;
+            SDL_Event e;
+            while (!quit) {
+                while (SDL_PollEvent(&e) != 0) {
+                    if (e.type == SDL_QUIT) {
+                        quit = true;
+                    }
+                }
+                const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+                if (currentKeyStates[SDL_SCANCODE_LEFT]) {
+                    spriteX -= SPRITE_SPEED;
+                }
+                if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
+                    spriteX += SPRITE_SPEED;
+                }
+                SDL_FillRect(gScreenSurface, NULL, SDL_MapRGB(gScreenSurface->format, 0, 0, 0));
+                SDL_BlitSurface(gBackground, NULL, gScreenSurface, NULL);
+                SDL_Rect spriteRect = { spriteX, spriteY, 0, 0 }; // Position of the sprite
+                SDL_BlitSurface(gSprite, NULL, gScreenSurface, &spriteRect);
+                SDL_UpdateWindowSurface(gWindow);
+            }
         }
-        else {
-            cout<<"Error:\n"<<SDL_GetError();
-        }
-        stay_window();
     }
+    close();
     return 0;
 }
