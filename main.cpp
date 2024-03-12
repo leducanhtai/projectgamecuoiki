@@ -4,18 +4,21 @@
 
 const int SCREEN_WIDTH = 600;
 const int SCREEN_HEIGHT = 900;
-const int SPRITE_SPEED = 5;
+const int SPRITE_SPEED = 5; 
 bool init();
 bool loadMedia();
 void close();
+
 SDL_Window* gWindow = NULL;
 SDL_Surface* gScreenSurface = NULL;
 SDL_Surface* gBackground = NULL;
 SDL_Surface* gSprite = NULL;
+
 int spriteX = SCREEN_WIDTH / 2;
 int spriteY = SCREEN_HEIGHT - 100;
 
 bool init() {
+
     bool success = true;
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -33,13 +36,14 @@ bool init() {
 }
 
 bool loadMedia() {
+
     bool success = true;
     gBackground = SDL_LoadBMP("img/farm.bmp");
     if (gBackground == NULL) {
         printf("Unable to load background image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
-    gSprite = SDL_LoadBMP("img/sprite.bmp");
+    gSprite = SDL_LoadBMP("img/maybayk33.bmp");
     if (gSprite == NULL) {
         printf("Unable to load sprite image! SDL Error: %s\n", SDL_GetError());
         success = false;
@@ -67,18 +71,25 @@ int main(int argc, char* args[]) {
         } else {
             bool quit = false;
             SDL_Event e;
+            Uint32 lastUpdate = SDL_GetTicks();
+            const Uint32 FRAME_DELAY = 400 / 60; 
             while (!quit) {
                 while (SDL_PollEvent(&e) != 0) {
                     if (e.type == SDL_QUIT) {
                         quit = true;
                     }
                 }
-                const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-                if (currentKeyStates[SDL_SCANCODE_LEFT]) {
-                    spriteX -= SPRITE_SPEED;
-                }
-                if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
-                    spriteX += SPRITE_SPEED;
+                Uint32 currentTime = SDL_GetTicks();
+                Uint32 deltaTime = currentTime - lastUpdate;
+                if (deltaTime >= FRAME_DELAY) {
+                    const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+                    if (currentKeyStates[SDL_SCANCODE_LEFT]) {
+                        spriteX -= SPRITE_SPEED;
+                    }
+                    if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
+                        spriteX += SPRITE_SPEED;
+                    }
+                    lastUpdate = currentTime;
                 }
                 SDL_FillRect(gScreenSurface, NULL, SDL_MapRGB(gScreenSurface->format, 0, 0, 0));
                 SDL_BlitSurface(gBackground, NULL, gScreenSurface, NULL);
