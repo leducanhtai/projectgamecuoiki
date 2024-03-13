@@ -4,21 +4,18 @@
 
 const int SCREEN_WIDTH = 600;
 const int SCREEN_HEIGHT = 900;
-const int SPRITE_SPEED = 5; 
+const int SPRITE_SPEED = 1; // Đổi tốc độ di chuyển ở đây
 bool init();
 bool loadMedia();
 void close();
-
 SDL_Window* gWindow = NULL;
 SDL_Surface* gScreenSurface = NULL;
 SDL_Surface* gBackground = NULL;
 SDL_Surface* gSprite = NULL;
-
 int spriteX = SCREEN_WIDTH / 2;
 int spriteY = SCREEN_HEIGHT - 100;
 
 bool init() {
-
     bool success = true;
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -32,11 +29,11 @@ bool init() {
             gScreenSurface = SDL_GetWindowSurface(gWindow);
         }
     }
+
     return success;
 }
 
 bool loadMedia() {
-
     bool success = true;
     gBackground = SDL_LoadBMP("img/farm.bmp");
     if (gBackground == NULL) {
@@ -72,7 +69,7 @@ int main(int argc, char* args[]) {
             bool quit = false;
             SDL_Event e;
             Uint32 lastUpdate = SDL_GetTicks();
-            const Uint32 FRAME_DELAY = 400 / 60; 
+            const Uint32 FRAME_DELAY = 400 / 60;
             while (!quit) {
                 while (SDL_PollEvent(&e) != 0) {
                     if (e.type == SDL_QUIT) {
@@ -83,12 +80,13 @@ int main(int argc, char* args[]) {
                 Uint32 deltaTime = currentTime - lastUpdate;
                 if (deltaTime >= FRAME_DELAY) {
                     const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-                    if (currentKeyStates[SDL_SCANCODE_LEFT]) {
+                    if (currentKeyStates[SDL_SCANCODE_LEFT] && spriteX > 0) { // Kiểm tra xem sprite có ra khỏi ranh giới trái không
                         spriteX -= SPRITE_SPEED;
                     }
-                    if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
-                        spriteX += SPRITE_SPEED;
+                    if (currentKeyStates[SDL_SCANCODE_RIGHT] && spriteX < SCREEN_WIDTH - gSprite->w) { // Kiểm tra xem sprite có ra khỏi ranh giới phải không
+                       spriteX += SPRITE_SPEED;
                     }
+
                     lastUpdate = currentTime;
                 }
                 SDL_FillRect(gScreenSurface, NULL, SDL_MapRGB(gScreenSurface->format, 0, 0, 0));
