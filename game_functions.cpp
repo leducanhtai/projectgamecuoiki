@@ -2,17 +2,16 @@
 #include "globals.h"
 #include "checkCollision.h"
 #include "randomFalling.h"
+#include "gameLoop.h"
 #include <iostream>
 #include <string>
 
 
 void handleEvent(SDL_Event &e) {
     if (e.type == SDL_QUIT) {
-        // Xử lý sự kiện thoát
         SDL_Quit();
         exit(0);
     } else if (e.type == SDL_KEYDOWN) {
-        // Xử lý sự kiện phím được nhấn
         switch (e.key.keysym.sym) {
             case SDLK_LEFT:
                 isMovingLeft = true;
@@ -22,16 +21,14 @@ void handleEvent(SDL_Event &e) {
                 isMovingLeft = false;
                 isMovingRight = true;
                 break;
-            case SDLK_UP: // Xử lý khi ấn phím "lên"
-                // Tạo một viên đạn mới
+            case SDLK_UP:
                 Bullet bullet;
-                bullet.x = spriteX + (gSprite->w - BULLET_WIDTH*11); // Đặt viên đạn vào giữa sprite theo chiều ngang
+                bullet.x = spriteX + (gSprite->w - BULLET_WIDTH*11);
                 bullet.y = spriteY;
                 bullets.push_back(bullet);
                 break;
         }
     } else if (e.type == SDL_KEYUP) {
-        // Xử lý sự kiện phím được thả ra
         switch (e.key.keysym.sym) {
             case SDLK_LEFT:
                 isMovingLeft = false;
@@ -40,7 +37,6 @@ void handleEvent(SDL_Event &e) {
                 isMovingRight = false;
                 break;
             case SDLK_UP:
-                // Thay đổi sprite thành hình ảnh "maybayk33.bmp" khi nhấn phím lên
                 gSprite = SDL_LoadBMP("img/maybayk33.bmp");               
                 break;
         }
@@ -48,9 +44,9 @@ void handleEvent(SDL_Event &e) {
 }
 void changeSpriteImage() {
     if (isSpriteFacingRight) {
-        gSprite = SDL_LoadBMP("img/maybayk11.bmp"); // Thay đổi hình ảnh sang sprite quay về bên phải
+        gSprite = SDL_LoadBMP("img/maybayk11.bmp"); 
     } else {
-        gSprite = SDL_LoadBMP("img/maybayk22.bmp"); // Thay đổi hình ảnh sang sprite quay về bên trái
+        gSprite = SDL_LoadBMP("img/maybayk22.bmp"); 
     }
 }
 
@@ -85,8 +81,8 @@ void renderGame() {
             SDL_Rect gameOverRect = { (SCREEN_WIDTH - gGameOverImage->w) / 2, (SCREEN_HEIGHT - gGameOverImage->h) / 2, 0, 0 };
             SDL_BlitSurface(gGameOverImage, NULL, gScreenSurface, &gameOverRect);
             SDL_UpdateWindowSurface(gWindow);
-            gameOver = true; // Đặt biến gameOver thành true khi xảy ra va chạm
-            return; // Thoát khỏi hàm khi có va chạm
+            gameOver = true;
+            return; 
         }
     }
 

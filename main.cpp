@@ -7,6 +7,7 @@
 #include "checkCollision.h"
 #include "randomFalling.h"
 #include "game_functions.h"
+#include "gameLoop.h"
 #include "globals.h"
 
 const int SCREEN_WIDTH = 600;
@@ -24,15 +25,14 @@ SDL_Surface* gScreenSurface = NULL;
 SDL_Surface* gBackground = NULL;
 SDL_Surface* gSprite = NULL;
 SDL_Surface* gFallingImage = NULL;
-SDL_Surface* gBulletImage = NULL; // Hình ảnh của viên đạn
-SDL_Surface* gContinueImage = NULL; // Hình ảnh "continue.bmp"
-SDL_Surface* gGameOverImage = NULL; // Hình ảnh "gameover.bmp"
+SDL_Surface* gBulletImage = NULL; 
+SDL_Surface* gGameOverImage = NULL; 
 
 int spriteX = SCREEN_WIDTH / 2;
 int spriteY = SCREEN_HEIGHT - 100;
 bool isMovingLeft = false;
 bool isMovingRight = false;
-bool isSpriteFacingRight = true; // Biến để theo dõi hướng của sprite
+bool isSpriteFacingRight = true;
 bool gameOver = false;
 const int NUM_FALLING_IMAGES = 1;
 const int BULLET_WIDTH = 8;
@@ -59,7 +59,7 @@ bool init() {
 
 bool loadMedia() {
     bool success = true;
-    gBackground = SDL_LoadBMP("img/caytao.bmp");
+    gBackground = SDL_LoadBMP("img/background1.bmp");
     if (gBackground == NULL) {
         printf("Unable to load background image! SDL Error: %s\n", SDL_GetError());
         success = false;
@@ -75,12 +75,12 @@ bool loadMedia() {
         printf("Unable to load falling image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }  
-    gBulletImage = SDL_LoadBMP("img/bullet.bmp"); // Load hình ảnh của viên đạn
+    gBulletImage = SDL_LoadBMP("img/bullet.bmp");
     if (gBulletImage == NULL) {
         printf("Unable to load bullet image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
-    gGameOverImage = SDL_LoadBMP("img/gameover.bmp"); // Load hình ảnh "gameover.bmp"
+    gGameOverImage = SDL_LoadBMP("img/gameover.bmp");
     if (gGameOverImage == NULL) {
         printf("Unable to load game over image! SDL Error: %s\n", SDL_GetError());
         success = false;
@@ -101,57 +101,23 @@ void close() {
     gWindow = NULL;
     SDL_Quit();
 }
-
 int main(int argc, char* args[]) {
-    while (!gameOver) {
-        if (!init()) {
-            printf("Failed to initialize!\n");
-            break; // Thoát khỏi vòng lặp nếu không thể khởi tạo SDL
-        }
-        if (!loadMedia()) {
-            printf("Failed to load media!\n");
-            break; // Thoát khỏi vòng lặp nếu không thể tải các tài nguyên đa phương tiện
-        }
-        SDL_Event e;
-        Uint32 lastUpdate = SDL_GetTicks();
-        const Uint32 FRAME_DELAY = 400 / 60;
-        FallingImage fallingImage;
-        for (int i = 0; i < NUM_FALLING_IMAGES; i++) {
-            fallingImage.x = rand() % SCREEN_WIDTH;
-            fallingImage.y = rand() % SCREEN_HEIGHT/10 ;
-            fallingImage.imagePath = getRandomFallingImage();
-            fallingImages.push_back(fallingImage);
-        }
-        while (!gameOver) {
-            while (SDL_PollEvent(&e) != 0) {
-                handleEvent(e);
-            }
-            Uint32 currentTime = SDL_GetTicks();
-            Uint32 deltaTime = currentTime - lastUpdate;
-            if (deltaTime >= FRAME_DELAY) {
-                if (isMovingLeft && spriteX > 0) {
-                    spriteX -= SPRITE_SPEED;
-                    if (isSpriteFacingRight) {
-                        isSpriteFacingRight = false;
-                        changeSpriteImage(); // Thay đổi hình ảnh khi đổi hướng
-                    }
-                }
-                if (isMovingRight && spriteX < SCREEN_WIDTH - gSprite->w) {
-                    spriteX += SPRITE_SPEED;
-                    if (!isSpriteFacingRight) {
-                        isSpriteFacingRight = true;
-                        changeSpriteImage(); // Thay đổi hình ảnh khi đổi hướng
-                    }
-                }
-                for (auto& bullet : bullets) {
-                    bullet.y -= BULLET_SPEED;
-                }
-
-                lastUpdate = currentTime;
-            }
-            renderGame(); // Gọi hàm vẽ trò chơi
-        }
-        close(); // Đóng cửa sổ khi trò chơi kết thúc
+    if (!init()) {
+        printf("Failed to initialize!\n");
+        return 1;
     }
+    if (!loadMedia()) {
+        printf("Failed to load media!\n");
+        return 1;
+    }
+    FallingImage fallingImage;
+    for (int i = 0; i < NUM_FALLING_IMAGES; i++) {
+        fallingImage.x = rand() % SCREEN_WIDTH;
+        fallingImage.y = rand() % SCREEN_HEIGHT / 10;
+        fallingImage.imagePath = getRandomFallingImage();
+        fallingImages.push_back(fallingImage);
+    }
+    gameLoop(); // Bắt đầu vòng lặp trò chơi
+    close(); // Đóng cửa sổ khi trò chơi kết thúc
     return 0;
 }
