@@ -1,6 +1,4 @@
-#include <string>
-#include <cstdlib>
-#include <ctime>
+
 #include "randomFalling.h"
 
 std::string getRandomFallingImage() {

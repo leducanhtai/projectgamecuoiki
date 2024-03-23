@@ -1,11 +1,4 @@
 #include "gameLoop.h"
-#include "game_functions.h"
-#include "globals.h"
-#include "checkCollision.h"
-#include "randomFalling.h"
-#include <iostream>
-#include <string>
-
 
 
 void gameLoop() {
@@ -23,22 +16,21 @@ void gameLoop() {
                 spriteX -= SPRITE_SPEED;
                 if (isSpriteFacingRight) {
                     isSpriteFacingRight = false;
-                    changeSpriteImage(); // Thay đổi hình ảnh khi đổi hướng
+                    changeSpriteImage();
                 }
             }
             if (isMovingRight && spriteX < SCREEN_WIDTH - gSprite->w) {
                 spriteX += SPRITE_SPEED;
                 if (!isSpriteFacingRight) {
                     isSpriteFacingRight = true;
-                    changeSpriteImage(); // Thay đổi hình ảnh khi đổi hướng
+                    changeSpriteImage();
                 }
             }
-            // Di chuyển các viên đạn lên trên màn hình
             for (auto& bullet : bullets) {
                 bullet.y -= BULLET_SPEED;
             }
             lastUpdate = currentTime;
         }
-        renderGame(); // Gọi hàm vẽ trò chơi
+        renderGame();
     }
 }

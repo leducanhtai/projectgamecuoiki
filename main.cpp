@@ -117,7 +117,7 @@ int main(int argc, char* args[]) {
         fallingImage.imagePath = getRandomFallingImage();
         fallingImages.push_back(fallingImage);
     }
-    gameLoop(); // Bắt đầu vòng lặp trò chơi
-    close(); // Đóng cửa sổ khi trò chơi kết thúc
+    gameLoop();
+    close();
     return 0;
 }
