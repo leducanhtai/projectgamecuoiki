@@ -42,23 +42,30 @@ void handleEvent(SDL_Event &e) {
         }
     }
 }
-void changeSpriteImage() {
-    if (isSpriteFacingRight) {
-        gSprite = SDL_LoadBMP("img/maybayk11.bmp"); 
+void renderText(const std::string& text, int x, int y) {
+    SDL_Color textColor = { 255, 255, 255 };
+    SDL_Surface* textSurface = TTF_RenderText_Solid(gFont, text.c_str(), textColor);
+    if (textSurface == nullptr) {
+        std::cerr << "Unable to render text surface! SDL_ttf Error: " << TTF_GetError() << std::endl;
     } else {
-        gSprite = SDL_LoadBMP("img/maybayk22.bmp"); 
+        SDL_Rect renderQuad = { x, y, textSurface->w, textSurface->h };
+        SDL_BlitSurface(textSurface, nullptr, gScreenSurface, &renderQuad);
+        SDL_FreeSurface(textSurface);
     }
 }
 
-void renderGame() {
+void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surface* gGameOverImage, SDL_Surface* gSprite, SDL_Surface* gBulletImage,std::vector<FallingImage>& fallingImages, 
+std::vector<Bullet>& bullets, int& spriteX, int& spriteY, bool& isMovingLeft, bool& isMovingRight, bool& isSpriteFacingRight, bool& gameOver) {
     SDL_FillRect(gScreenSurface, NULL, SDL_MapRGB(gScreenSurface->format, 0, 0, 0));
     SDL_BlitSurface(gBackground, NULL, gScreenSurface, NULL);
-    // Vẽ các viên đạn
-    for (const auto& bullet : bullets) {
+
+    for (auto& bullet : bullets) {
+        bullet.y -= BULLET_SPEED;
         SDL_Rect bulletRect = { bullet.x, bullet.y, BULLET_WIDTH, BULLET_HEIGHT };
         SDL_BlitSurface(gBulletImage, NULL, gScreenSurface, &bulletRect);
     }
-    for (int i = 0; i < NUM_FALLING_IMAGES; ++i) {
+
+    for (int i = 0; i < NUM_FALLING_IMAGES; i++) {
         fallingImages[i].y += FALLING_SPEED;
         if (fallingImages[i].y > SCREEN_HEIGHT) {
             fallingImages[i].x = rand() % SCREEN_WIDTH;
@@ -75,18 +82,20 @@ void renderGame() {
         }
         int spriteW = gSprite->w;
         int spriteH = gSprite->h;
-        int imageW = gFallingImage->w;
-        int imageH = gFallingImage->h;
+        int imageW = fallingImage->w;
+        int imageH = fallingImage->h;
         if (checkCollision(spriteX, spriteY, spriteW, spriteH, fallingImages[i].x, fallingImages[i].y, imageW, imageH)) {
             SDL_Rect gameOverRect = { (SCREEN_WIDTH - gGameOverImage->w) / 2, (SCREEN_HEIGHT - gGameOverImage->h) / 2, 0, 0 };
             SDL_BlitSurface(gGameOverImage, NULL, gScreenSurface, &gameOverRect);
             SDL_UpdateWindowSurface(gWindow);
             gameOver = true;
-            return; 
+            return;
         }
     }
 
     SDL_Rect spriteRect = { spriteX, spriteY, 0, 0 };
     SDL_BlitSurface(gSprite, NULL, gScreenSurface, &spriteRect);
+    renderText("Time: " + std::to_string(Time), 10, 10);
+    renderText("Points: " + std::to_string(Points), 270, 10);
     SDL_UpdateWindowSurface(gWindow);
 }

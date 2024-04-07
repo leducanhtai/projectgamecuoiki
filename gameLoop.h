@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "src/include/SDL2/SDL.h"
-#include "src/include/SDL2/SDL_image.h"
+#include "src/include/SDL2/SDL_ttf.h"
 #include <stdio.h>
 #include <vector>
 #include <cstdlib>
@@ -13,5 +13,7 @@
 #include "checkCollision.h"
 #include "randomFalling.h"
 
+void changeSpriteImage();
 void gameLoop();
+
 #endif //GAMELOOP_H

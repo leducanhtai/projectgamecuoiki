@@ -3,6 +3,7 @@
 
 
 #include "src/include/SDL2/SDL.h"
+#include "src/include/SDL2/SDL_ttf.h"
 #include <vector>
 #include <string>
 
@@ -25,9 +26,12 @@ extern SDL_Surface* gFallingImage;
 extern SDL_Surface* gBulletImage;
 extern SDL_Surface* gContinueImage;
 extern SDL_Surface* gGameOverImage;
+extern TTF_Font* gFont; 
 
 extern int spriteX;
 extern int spriteY;
+extern int Time;
+extern int Points;
 
 extern const int NUM_FALLING_IMAGES;
 extern const int BULLET_WIDTH;
@@ -38,12 +42,11 @@ struct FallingImage {
     std::string imagePath;
 };
 
-extern std::vector<FallingImage> fallingImages;
-
 struct Bullet {
     int x, y;
 };
 
+extern std::vector<FallingImage> fallingImages;
 extern std::vector<Bullet> bullets;
 
 #endif // GLOBALS_H

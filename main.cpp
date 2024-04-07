@@ -1,5 +1,6 @@
 #include <iostream>
 #include "src/include/SDL2/SDL.h"
+#include "src/include/SDL2/SDL_ttf.h"
 #include <stdio.h>
 #include <vector>
 #include <cstdlib>
@@ -13,20 +14,20 @@
 const int SCREEN_WIDTH = 600;
 const int SCREEN_HEIGHT = 1067;
 const int SPRITE_SPEED = 3;
-const int BULLET_SPEED = 5;
+const int BULLET_SPEED = 2;
 const int FALLING_SPEED = 1;
-
-bool init();
-bool loadMedia();
-void close();
+const int NUM_FALLING_IMAGES = 1;
+const int BULLET_WIDTH = 3;
+const int BULLET_HEIGHT = 3;
 
 SDL_Window* gWindow = NULL;
 SDL_Surface* gScreenSurface = NULL;
 SDL_Surface* gBackground = NULL;
 SDL_Surface* gSprite = NULL;
-SDL_Surface* gFallingImage = NULL;
+//SDL_Surface* gFallingImage = NULL;
 SDL_Surface* gBulletImage = NULL; 
 SDL_Surface* gGameOverImage = NULL; 
+TTF_Font* gFont = nullptr;
 
 int spriteX = SCREEN_WIDTH / 2;
 int spriteY = SCREEN_HEIGHT - 100;
@@ -34,9 +35,8 @@ bool isMovingLeft = false;
 bool isMovingRight = false;
 bool isSpriteFacingRight = true;
 bool gameOver = false;
-const int NUM_FALLING_IMAGES = 1;
-const int BULLET_WIDTH = 8;
-const int BULLET_HEIGHT = 16;
+int Time = 0;
+int Points = 0;
 
 std::vector<FallingImage> fallingImages;
 std::vector<Bullet> bullets;
@@ -54,6 +54,16 @@ bool init() {
             gScreenSurface = SDL_GetWindowSurface(gWindow);
         }
     }
+    if (TTF_Init() == -1) {
+        printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+        success = false;
+    } else {
+        gFont = TTF_OpenFont("arial.ttf", 28); // Load font
+        if (gFont == nullptr) {
+            printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
+            success = false;
+        }
+    }
     return success;
 }
 
@@ -69,12 +79,12 @@ bool loadMedia() {
         printf("Unable to load sprite image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
-    std::string fallingImageFile = getRandomFallingImage();
-    gFallingImage = SDL_LoadBMP(fallingImageFile.c_str());
-    if (gFallingImage == NULL) {
-        printf("Unable to load falling image! SDL Error: %s\n", SDL_GetError());
-        success = false;
-    }  
+    //std::string fallingImageFile = getRandomFallingImage();
+    //gFallingImage = SDL_LoadBMP(fallingImageFile.c_str());
+    //if (gFallingImage == NULL) {
+    //    printf("Unable to load falling image! SDL Error: %s\n", SDL_GetError());
+    //    success = false;
+    //}  
     gBulletImage = SDL_LoadBMP("img/bullet.bmp");
     if (gBulletImage == NULL) {
         printf("Unable to load bullet image! SDL Error: %s\n", SDL_GetError());
@@ -102,6 +112,7 @@ void close() {
     SDL_Quit();
 }
 int main(int argc, char* args[]) {
+    srand(time(NULL));
     if (!init()) {
         printf("Failed to initialize!\n");
         return 1;
@@ -113,7 +124,7 @@ int main(int argc, char* args[]) {
     FallingImage fallingImage;
     for (int i = 0; i < NUM_FALLING_IMAGES; i++) {
         fallingImage.x = rand() % SCREEN_WIDTH;
-        fallingImage.y = rand() % SCREEN_HEIGHT / 10;
+        fallingImage.y = rand() % (SCREEN_HEIGHT / 10);
         fallingImage.imagePath = getRandomFallingImage();
         fallingImages.push_back(fallingImage);
     }

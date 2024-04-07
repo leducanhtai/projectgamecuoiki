@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "src/include/SDL2/SDL.h"
-#include "src/include/SDL2/SDL_image.h"
+#include "src/include/SDL2/SDL_ttf.h"
 #include <stdio.h>
 #include <vector>
 #include <cstdlib>
@@ -14,7 +14,8 @@
 #include "gameLoop.h"
 
 void handleEvent(SDL_Event &e);
-void changeSpriteImage();
-void renderGame();
+void renderText(const std::string& text, int x, int y);
+void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surface* gGameOverImage, SDL_Surface* gSprite, SDL_Surface* gBulletImage,std::vector<FallingImage>& fallingImages, 
+std::vector<Bullet>& bullets, int& spriteX, int& spriteY, bool& isMovingLeft, bool& isMovingRight, bool& isSpriteFacingRight, bool& gameOver);
 
 #endif // GAME_FUNCTIONS_H

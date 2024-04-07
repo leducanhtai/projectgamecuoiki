@@ -3,7 +3,7 @@
 #define CHECKCOLLISION_H
 
 #include "src/include/SDL2/SDL.h"
-#include "src/include/SDL2/SDL_image.h"
+#include "src/include/SDL2/SDL_ttf.h"
 #include "globals.h"
 #include <iostream>
 #include <stdio.h>
@@ -14,6 +14,6 @@
 #include "gameLoop.h"
 #include "randomFalling.h"
 
-bool checkCollision(int spriteX, int spriteY, int spriteW, int spriteH, int imageX, int imageY, int imageW, int imageH);
+bool checkCollision(int X1, int Y1, int W1, int H1, int X2, int Y2, int W2, int H2);
 
 #endif //CHECKCOLLISION_H
