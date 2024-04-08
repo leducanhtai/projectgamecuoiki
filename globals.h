@@ -22,7 +22,7 @@ extern SDL_Window* gWindow;
 extern SDL_Surface* gScreenSurface;
 extern SDL_Surface* gBackground;
 extern SDL_Surface* gSprite;
-extern SDL_Surface* gFallingImage;
+//extern SDL_Surface* gFallingImage;
 extern SDL_Surface* gBulletImage;
 extern SDL_Surface* gContinueImage;
 extern SDL_Surface* gGameOverImage;

@@ -24,7 +24,6 @@ SDL_Window* gWindow = NULL;
 SDL_Surface* gScreenSurface = NULL;
 SDL_Surface* gBackground = NULL;
 SDL_Surface* gSprite = NULL;
-//SDL_Surface* gFallingImage = NULL;
 SDL_Surface* gBulletImage = NULL; 
 SDL_Surface* gGameOverImage = NULL; 
 TTF_Font* gFont = nullptr;
@@ -42,24 +41,35 @@ std::vector<FallingImage> fallingImages;
 std::vector<Bullet> bullets;
 bool init() {
     bool success = true;
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) 
+    {
         printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
         success = false;
-    } else {
-        gWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-        if (gWindow == NULL) {
+    } 
+    else 
+    {
+        gWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
+                                                     SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+        if (gWindow == NULL) 
+        {
             printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
             success = false;
-        } else {
+        } 
+        else 
+        {
             gScreenSurface = SDL_GetWindowSurface(gWindow);
         }
     }
-    if (TTF_Init() == -1) {
+    if (TTF_Init() == -1) 
+    {
         printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
         success = false;
-    } else {
+    } 
+    else 
+    {
         gFont = TTF_OpenFont("arial.ttf", 28); // Load font
-        if (gFont == nullptr) {
+        if (gFont == nullptr) 
+        {
             printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
             success = false;
         }
@@ -67,62 +77,66 @@ bool init() {
     return success;
 }
 
-bool loadMedia() {
+bool loadMedia() 
+{
     bool success = true;
     gBackground = SDL_LoadBMP("img/background1.bmp");
-    if (gBackground == NULL) {
+    if (gBackground == NULL) 
+    {
         printf("Unable to load background image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
     gSprite = SDL_LoadBMP("img/maybayk11.bmp");
-    if (gSprite == NULL) {
+    if (gSprite == NULL) 
+    {
         printf("Unable to load sprite image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
-    //std::string fallingImageFile = getRandomFallingImage();
-    //gFallingImage = SDL_LoadBMP(fallingImageFile.c_str());
-    //if (gFallingImage == NULL) {
-    //    printf("Unable to load falling image! SDL Error: %s\n", SDL_GetError());
-    //    success = false;
-    //}  
     gBulletImage = SDL_LoadBMP("img/bullet.bmp");
-    if (gBulletImage == NULL) {
+    if (gBulletImage == NULL) 
+    {
         printf("Unable to load bullet image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
     gGameOverImage = SDL_LoadBMP("img/gameover.bmp");
-    if (gGameOverImage == NULL) {
+    if (gGameOverImage == NULL) 
+    {
         printf("Unable to load game over image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
     return success;
 }
 
-void close() {
+void close() 
+{
     SDL_FreeSurface(gBackground);
     gBackground = NULL;
     SDL_FreeSurface(gSprite);
     gSprite = NULL;
-    SDL_FreeSurface(gFallingImage);
-    gFallingImage = NULL;
+    SDL_FreeSurface(gBulletImage);
+    gBulletImage = NULL;
     SDL_FreeSurface(gGameOverImage);
     gGameOverImage = NULL;
     SDL_DestroyWindow(gWindow);
     gWindow = NULL;
     SDL_Quit();
 }
-int main(int argc, char* args[]) {
+int main(int argc, char* args[]) 
+{
     srand(time(NULL));
-    if (!init()) {
+    if (!init()) 
+    {
         printf("Failed to initialize!\n");
         return 1;
     }
-    if (!loadMedia()) {
+    if (!loadMedia()) 
+    {
         printf("Failed to load media!\n");
         return 1;
     }
     FallingImage fallingImage;
-    for (int i = 0; i < NUM_FALLING_IMAGES; i++) {
+    for (int i = 0; i < NUM_FALLING_IMAGES; i++) 
+    {
         fallingImage.x = rand() % SCREEN_WIDTH;
         fallingImage.y = rand() % (SCREEN_HEIGHT / 10);
         fallingImage.imagePath = getRandomFallingImage();
