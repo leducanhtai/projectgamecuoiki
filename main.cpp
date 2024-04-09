@@ -26,6 +26,7 @@ SDL_Surface* gBackground = NULL;
 SDL_Surface* gSprite = NULL;
 SDL_Surface* gBulletImage = NULL; 
 SDL_Surface* gGameOverImage = NULL; 
+SDL_Surface* gBossImage = NULL;
 TTF_Font* gFont = nullptr;
 
 int spriteX = SCREEN_WIDTH / 2;
@@ -36,6 +37,10 @@ bool isSpriteFacingRight = true;
 bool gameOver = false;
 int Time = 0;
 int Points = 0;
+int Blood=500;
+int bossX = SCREEN_WIDTH / 2;
+int bossY = SCREEN_HEIGHT / 2;
+int bossDirection = 1;
 
 std::vector<FallingImage> fallingImages;
 std::vector<Bullet> bullets;
@@ -104,6 +109,11 @@ bool loadMedia()
         printf("Unable to load game over image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
+    gBossImage = SDL_LoadBMP("img/boss.bmp");
+    if (gBossImage == NULL) {
+        printf("Unable to load boss image! SDL Error: %s\n", SDL_GetError());
+        success = false;
+    }
     return success;
 }
 
@@ -119,6 +129,8 @@ void close()
     gGameOverImage = NULL;
     SDL_DestroyWindow(gWindow);
     gWindow = NULL;
+    SDL_FreeSurface(gBossImage);
+    gBossImage = NULL;
     SDL_Quit();
 }
 int main(int argc, char* args[]) 

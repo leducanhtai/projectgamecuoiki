@@ -26,16 +26,22 @@ extern SDL_Surface* gSprite;
 extern SDL_Surface* gBulletImage;
 extern SDL_Surface* gContinueImage;
 extern SDL_Surface* gGameOverImage;
+extern SDL_Surface* gBossImage;
 extern TTF_Font* gFont; 
 
 extern int spriteX;
 extern int spriteY;
 extern int Time;
 extern int Points;
+extern int Blood;
+extern int bossX;
+extern int bossY;
+extern int bossDirection;
 
 extern const int NUM_FALLING_IMAGES;
 extern const int BULLET_WIDTH;
 extern const int BULLET_HEIGHT;
+
 
 struct FallingImage {
     int x, y;

@@ -14,6 +14,7 @@
 #include "randomFalling.h"
 
 void changeSpriteImage();
+void moveBoss();
 void gameLoop();
 
 #endif //GAMELOOP_H
