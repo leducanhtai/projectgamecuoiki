@@ -10,13 +10,14 @@
 #include "game_functions.h"
 #include "gameLoop.h"
 #include "globals.h"
+#include "LoadBoss.h"
 
 const int SCREEN_WIDTH = 600;
 const int SCREEN_HEIGHT = 1067;
 const int SPRITE_SPEED = 3;
 const int BULLET_SPEED = 2;
 const int FALLING_SPEED = 1;
-const int NUM_FALLING_IMAGES = 1;
+const int NUM_FALLING_IMAGES = 2;
 const int BULLET_WIDTH = 3;
 const int BULLET_HEIGHT = 3;
 
@@ -42,7 +43,7 @@ int Points = 0;
 int Blood=500;
 
 int bossX = SCREEN_WIDTH / 2;
-int bossY = SCREEN_HEIGHT / 2;
+int bossY = SCREEN_HEIGHT / 5;
 int boss2X = SCREEN_WIDTH / 2;
 int boss2Y = SCREEN_HEIGHT / 5;
 int boss3X = SCREEN_WIDTH / 2;
@@ -133,8 +134,6 @@ bool loadMedia() {
     }
     return success;
 }
-
-
 void close() {
     SDL_FreeSurface(gBackground);
     gBackground = NULL;

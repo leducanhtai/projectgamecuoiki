@@ -12,10 +12,13 @@
 #include "checkCollision.h"
 #include "randomFalling.h"
 #include "gameLoop.h"
+#include "LoadBoss.h"
 
 void handleEvent(SDL_Event &e);
 void renderText(const std::string& text, int x, int y);
-void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surface* gGameOverImage, SDL_Surface* gSprite, SDL_Surface* gBulletImage,std::vector<FallingImage>& fallingImages, 
-std::vector<Bullet>& bullets, int& spriteX, int& spriteY, bool& isMovingLeft, bool& isMovingRight, bool& isSpriteFacingRight, bool& gameOver);
+void LoadBoss();
+void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surface* gGameOverImage, SDL_Surface* gSprite, 
+                SDL_Surface* gBulletImage,std::vector<FallingImage>& fallingImages, std::vector<Bullet>& bullets, int& spriteX, 
+                int& spriteY, bool& isMovingLeft, bool& isMovingRight, bool& isSpriteFacingRight, bool& gameOver);
 
 #endif // GAME_FUNCTIONS_H

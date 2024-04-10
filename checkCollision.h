@@ -13,6 +13,7 @@
 #include "game_functions.h"
 #include "gameLoop.h"
 #include "randomFalling.h"
+#include "LoadBoss.h"
 
 bool checkCollision(int X1, int Y1, int W1, int H1, int X2, int Y2, int W2, int H2);
 

@@ -1,5 +1,5 @@
-#ifndef GAMELOOP_H
-#define GAMELOOP_H
+#ifndef LOADBOSS_H
+#define LOADBOSS_H
 
 #include <iostream>
 #include "src/include/SDL2/SDL.h"
@@ -12,10 +12,7 @@
 #include "game_functions.h"
 #include "checkCollision.h"
 #include "randomFalling.h"
-#include "LoadBoss.h"
 
-void changeSpriteImage();
-void moveBoss();
-void gameLoop();
+void LoadBoss();
 
-#endif //GAMELOOP_H
+#endif //LOADBOSS_H

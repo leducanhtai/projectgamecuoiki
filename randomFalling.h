@@ -12,6 +12,7 @@
 #include "gameLoop.h"
 #include "game_functions.h"
 #include "checkCollision.h"
+#include "LoadBoss.h"
 
 
 std::string getRandomFallingImage();
