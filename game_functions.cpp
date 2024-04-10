@@ -67,44 +67,63 @@ void renderText(const std::string& text, int x, int y)
     }
 }
 
-void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surface* gGameOverImage, SDL_Surface* gSprite, SDL_Surface* gBulletImage,
-    std::vector<FallingImage>& fallingImages, std::vector<Bullet>& bullets, int& spriteX, int& spriteY, bool& isMovingLeft, bool& isMovingRight, bool& isSpriteFacingRight, bool& gameOver) {
+void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surface* gGameOverImage, SDL_Surface* gSprite, 
+                SDL_Surface* gBulletImage,std::vector<FallingImage>& fallingImages, std::vector<Bullet>& bullets, int& spriteX, 
+                int& spriteY, bool& isMovingLeft, bool& isMovingRight, bool& isSpriteFacingRight, bool& gameOver) 
+{
     SDL_FillRect(gScreenSurface, NULL, SDL_MapRGB(gScreenSurface->format, 0, 0, 0));
     SDL_BlitSurface(gBackground, NULL, gScreenSurface, NULL);
     
-    if (Time>=10) {
-                
-        SDL_Rect bossRect = { (SCREEN_WIDTH - gBossImage->w) / 2, (SCREEN_HEIGHT - gBossImage->h) / 2, 0, 0 };
+    if (Points >= 10 && Points <= 40) 
+    { 
+        isBossVisible = true;
+        SDL_Rect bossRect = { bossX, bossY, 0, 0 };
         SDL_BlitSurface(gBossImage, NULL, gScreenSurface, &bossRect);
     }
+    else if(Points >= 60 && Points <= 80 )
+    {
+        isBossVisible = true;
+        SDL_Rect boss2Rect = { boss2X, boss2Y, 0, 0 };
+        SDL_BlitSurface(gBoss2Image, NULL, gScreenSurface, &boss2Rect);
+    }
+    else if(Points >=100 && Points <= 150)
+    {
+        isBossVisible = true;
+        SDL_Rect boss3Rect = { boss3X, boss3Y, 0, 0 };
+        SDL_BlitSurface(gBoss3Image, NULL, gScreenSurface, &boss3Rect);
+    }
+    else
+    {
+        isBossVisible = false;
+    }
     
-    for (auto& bullet : bullets) {
+    for (auto& bullet : bullets) 
+    {
         bullet.y -= BULLET_SPEED;
         SDL_Rect bulletRect = { bullet.x, bullet.y, BULLET_WIDTH, BULLET_HEIGHT };
         SDL_BlitSurface(gBulletImage, NULL, gScreenSurface, &bulletRect);
     }
 
-    for (int i = 0; i < NUM_FALLING_IMAGES; i++) {
+    for (int i = 0; i < NUM_FALLING_IMAGES; i++) 
+    {
         fallingImages[i].y += FALLING_SPEED;
-        if (fallingImages[i].y > SCREEN_HEIGHT) {
+        if (fallingImages[i].y > SCREEN_HEIGHT) 
+        {
             fallingImages[i].x = rand() % SCREEN_WIDTH;
             fallingImages[i].y = rand() % (SCREEN_HEIGHT / 10);
             fallingImages[i].imagePath = getRandomFallingImage();
         }
         SDL_Surface* fallingImage = SDL_LoadBMP(fallingImages[i].imagePath.c_str());
-        if (fallingImage == NULL) {
-            printf("Unable to load falling image! SDL Error: %s\n", SDL_GetError());
-        }
-        else {
-            SDL_Rect fallingRect = { fallingImages[i].x, fallingImages[i].y, 0, 0 };
-            SDL_BlitSurface(fallingImage, NULL, gScreenSurface, &fallingRect);
-            SDL_FreeSurface(fallingImage);
-        }
+        SDL_Rect fallingRect = { fallingImages[i].x, fallingImages[i].y, 0, 0 };
+        SDL_BlitSurface(fallingImage, NULL, gScreenSurface, &fallingRect);
+        SDL_FreeSurface(fallingImage);
+        
         int spriteW = gSprite->w;
         int spriteH = gSprite->h;
-        int imageW = fallingImage->w;
-        int imageH = fallingImage->h; 
-        if (checkCollision(spriteX, spriteY, spriteW, spriteH, fallingImages[i].x, fallingImages[i].y, imageW, imageH)) {
+        int imageW = fallingImage->w; // sửa từ gFallingImage thành fallingImage
+        int imageH = fallingImage->h; // sửa từ gFallingImage thành fallingImage
+        if (checkCollision(spriteX, spriteY, spriteW, spriteH, fallingImages[i].x, fallingImages[i].y, imageW, imageH)) 
+        {
             Blood --;
             if(Blood == 0)
             {

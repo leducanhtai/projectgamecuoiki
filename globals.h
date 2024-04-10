@@ -17,6 +17,7 @@ extern bool isMovingLeft;
 extern bool isMovingRight;
 extern bool isSpriteFacingRight;
 extern bool gameOver;
+extern bool isBossVisible;
 
 extern SDL_Window* gWindow;
 extern SDL_Surface* gScreenSurface;
@@ -27,6 +28,8 @@ extern SDL_Surface* gBulletImage;
 extern SDL_Surface* gContinueImage;
 extern SDL_Surface* gGameOverImage;
 extern SDL_Surface* gBossImage;
+extern SDL_Surface* gBoss2Image;
+extern SDL_Surface* gBoss3Image;
 extern TTF_Font* gFont; 
 
 extern int spriteX;
@@ -37,6 +40,12 @@ extern int Blood;
 extern int bossX;
 extern int bossY;
 extern int bossDirection;
+extern int boss2X;
+extern int boss2Y;
+extern int boss2Direction;
+extern int boss3X;
+extern int boss3Y;
+extern int boss3Direction;
 
 extern const int NUM_FALLING_IMAGES;
 extern const int BULLET_WIDTH;

@@ -27,6 +27,8 @@ SDL_Surface* gSprite = NULL;
 SDL_Surface* gBulletImage = NULL; 
 SDL_Surface* gGameOverImage = NULL; 
 SDL_Surface* gBossImage = NULL;
+SDL_Surface* gBoss2Image = NULL;
+SDL_Surface* gBoss3Image = NULL;
 TTF_Font* gFont = nullptr;
 
 int spriteX = SCREEN_WIDTH / 2;
@@ -38,9 +40,19 @@ bool gameOver = false;
 int Time = 0;
 int Points = 0;
 int Blood=500;
+
 int bossX = SCREEN_WIDTH / 2;
 int bossY = SCREEN_HEIGHT / 2;
+int boss2X = SCREEN_WIDTH / 2;
+int boss2Y = SCREEN_HEIGHT / 5;
+int boss3X = SCREEN_WIDTH / 2;
+int boss3Y = SCREEN_HEIGHT / 5;
+
 int bossDirection = 1;
+int boss2Direction = 1;
+int boss3Direction = 1;
+
+bool isBossVisible = false;
 
 std::vector<FallingImage> fallingImages;
 std::vector<Bullet> bullets;
@@ -82,30 +94,25 @@ bool init() {
     return success;
 }
 
-bool loadMedia() 
-{
+bool loadMedia() {
     bool success = true;
     gBackground = SDL_LoadBMP("img/background1.bmp");
-    if (gBackground == NULL) 
-    {
+    if (gBackground == NULL) {
         printf("Unable to load background image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
     gSprite = SDL_LoadBMP("img/maybayk11.bmp");
-    if (gSprite == NULL) 
-    {
+    if (gSprite == NULL) {
         printf("Unable to load sprite image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
     gBulletImage = SDL_LoadBMP("img/bullet.bmp");
-    if (gBulletImage == NULL) 
-    {
+    if (gBulletImage == NULL) {
         printf("Unable to load bullet image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
-    gGameOverImage = SDL_LoadBMP("img/gameover.bmp");
-    if (gGameOverImage == NULL) 
-    {
+    gGameOverImage = SDL_LoadBMP("img/gameover1.bmp");
+    if (gGameOverImage == NULL) {
         printf("Unable to load game over image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
@@ -114,11 +121,21 @@ bool loadMedia()
         printf("Unable to load boss image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
+    gBoss2Image = SDL_LoadBMP("img/boss2.bmp");
+    if (gBoss2Image == NULL) {
+        printf("Unable to load boss2 image! SDL Error: %s\n", SDL_GetError());
+        success = false;
+    }
+    gBoss3Image = SDL_LoadBMP("img/boss3.bmp");
+    if (gBoss3Image == NULL) {
+        printf("Unable to load boss3 image! SDL Error: %s\n", SDL_GetError());
+        success = false;
+    }
     return success;
 }
 
-void close() 
-{
+
+void close() {
     SDL_FreeSurface(gBackground);
     gBackground = NULL;
     SDL_FreeSurface(gSprite);
@@ -131,8 +148,13 @@ void close()
     gWindow = NULL;
     SDL_FreeSurface(gBossImage);
     gBossImage = NULL;
+    SDL_FreeSurface(gBoss2Image);
+    gBoss2Image = NULL;
+    SDL_FreeSurface(gBoss3Image);
+    gBoss3Image = NULL;
     SDL_Quit();
 }
+
 int main(int argc, char* args[]) 
 {
     srand(time(NULL));
