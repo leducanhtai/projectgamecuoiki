@@ -17,12 +17,12 @@ void moveEntity(int& entityX, int& entityDirection, int entityWidth, int screenW
     if (entityX <= 0) 
     {
         entityX = 0;
-        entityDirection = 1; // Đổi hướng di chuyển sang phải
+        entityDirection = 1;
     } 
     else if (entityX >= screenWidth - entityWidth) 
     {
         entityX = screenWidth - entityWidth;
-        entityDirection = -1; // Đổi hướng di chuyển sang trái
+        entityDirection = -1;
     }
 }
 void gameLoop() 
@@ -31,7 +31,7 @@ void gameLoop()
     Uint32 lastUpdate = SDL_GetTicks();
     Uint32 lastSecond = SDL_GetTicks();
     int frames = 0;
-    const Uint32 FRAME_DELAY = 400 / 60;
+    const Uint32 FRAME_DELAY = 500 / 60;
     while (true) 
     {
         while (SDL_PollEvent(&e) != 0) 
@@ -60,9 +60,12 @@ void gameLoop()
                          gameOver = false;
                          Time = 0;
                          Points = 0;
-                         Blood = 300;
+                         Blood = 1000;
+                         Level =0;
                          bullets.clear();
                          fallingImages.clear();
+                         lightImages.clear();
+
                         for (int i = 0; i < NUM_FALLING_IMAGES; i++) 
                         {
                             FallingImage fallingImage;
@@ -113,15 +116,24 @@ void gameLoop()
                 for (auto& fallingImage : fallingImages) 
                 {
                     if (checkCollision(bulletIter->x, bulletIter->y, BULLET_WIDTH, BULLET_HEIGHT,
-                                       fallingImage.x, fallingImage.y, gSprite->w, gSprite->h)||
-                        (isBossVisible && checkCollision(bulletIter->x, bulletIter->y, BULLET_WIDTH, 
-                                       BULLET_HEIGHT, bossX, bossY, gBossImage->w, gBossImage->h))) 
+                                       fallingImage.x, fallingImage.y, gSprite->w, gSprite->h))
                     {
+                        
                         bulletIter = bullets.erase(bulletIter);
                         bulletRemoved = true;
+                       // fallingImage = fallingImages.back();
+                        //fallingImages.pop_back();
                         Points++;
                         break;
                     }
+                }
+                if(isBossVisible && checkCollision(bulletIter->x, bulletIter->y, BULLET_WIDTH, 
+                                       BULLET_HEIGHT, bossX, bossY, gBossImage->w, gBossImage->h))
+                {
+                    bulletIter = bullets.erase(bulletIter);
+                    bulletRemoved = true;
+                    Points++;
+                    
                 }
             
                 if (!bulletRemoved) 

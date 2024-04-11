@@ -18,6 +18,7 @@ extern bool isMovingRight;
 extern bool isSpriteFacingRight;
 extern bool gameOver;
 extern bool isBossVisible;
+extern bool isMouseClicked;
 
 extern SDL_Window* gWindow;
 extern SDL_Surface* gScreenSurface;
@@ -30,19 +31,24 @@ extern SDL_Surface* gGameOverImage;
 extern SDL_Surface* gBossImage;
 extern SDL_Surface* gBoss2Image;
 extern SDL_Surface* gBoss3Image;
+extern SDL_Surface* gLightImage;
 extern TTF_Font* gFont; 
 
 extern int spriteX;
 extern int spriteY;
 extern int Time;
 extern int Points;
+extern int Level;
+
 extern int Blood;
 extern int bossX;
 extern int bossY;
 extern int bossDirection;
+
 extern int boss2X;
 extern int boss2Y;
 extern int boss2Direction;
+
 extern int boss3X;
 extern int boss3Y;
 extern int boss3Direction;
@@ -60,7 +66,10 @@ struct FallingImage {
 struct Bullet {
     int x, y;
 };
-
+struct LightImage {
+    int x, y;
+};
+extern std::vector<LightImage> lightImages;
 extern std::vector<FallingImage> fallingImages;
 extern std::vector<Bullet> bullets;
 

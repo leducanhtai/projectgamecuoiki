@@ -30,6 +30,7 @@ SDL_Surface* gGameOverImage = NULL;
 SDL_Surface* gBossImage = NULL;
 SDL_Surface* gBoss2Image = NULL;
 SDL_Surface* gBoss3Image = NULL;
+SDL_Surface* gLightImage = NULL;
 TTF_Font* gFont = nullptr;
 
 int spriteX = SCREEN_WIDTH / 2;
@@ -37,10 +38,12 @@ int spriteY = SCREEN_HEIGHT - 100;
 bool isMovingLeft = false;
 bool isMovingRight = false;
 bool isSpriteFacingRight = true;
+bool isMouseClicked = false;
 bool gameOver = false;
 int Time = 0;
 int Points = 0;
-int Blood=500;
+int Blood=2000;
+int Level = 1;
 
 int bossX = SCREEN_WIDTH / 2;
 int bossY = SCREEN_HEIGHT / 5;
@@ -57,6 +60,8 @@ bool isBossVisible = false;
 
 std::vector<FallingImage> fallingImages;
 std::vector<Bullet> bullets;
+std::vector<LightImage> lightImages;
+
 bool init() {
     bool success = true;
     if (SDL_Init(SDL_INIT_VIDEO) < 0) 
@@ -132,8 +137,14 @@ bool loadMedia() {
         printf("Unable to load boss3 image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
+    gLightImage = SDL_LoadBMP("img/light.bmp");
+    if (gLightImage == NULL) {
+    printf("Unable to load light image! SDL Error: %s\n", SDL_GetError());
+    success = false;
+    }
     return success;
 }
+
 void close() {
     SDL_FreeSurface(gBackground);
     gBackground = NULL;

@@ -7,46 +7,59 @@
 #include <string>
 
 
-void handleEvent(SDL_Event &e) 
+void handleEvent(SDL_Event& e) 
 {
     if (e.type == SDL_QUIT) 
     {
         SDL_Quit();
         exit(0);
-    } 
+    }
     else if (e.type == SDL_KEYDOWN) 
     {
         switch (e.key.keysym.sym) 
         {
-            case SDLK_LEFT:
-                isMovingLeft = true;
-                isMovingRight = false;
-                break;
-            case SDLK_RIGHT:
-                isMovingLeft = false;
-                isMovingRight = true;
-                break;
-            case SDLK_UP:
-                Bullet bullet;
-                bullet.x = spriteX + (gSprite->w - BULLET_WIDTH*14);
-                bullet.y = spriteY;
-                bullets.push_back(bullet);
-                break;
+        case SDLK_LEFT:
+            isMovingLeft = true;
+            isMovingRight = false;
+            break;
+        case SDLK_RIGHT:
+            isMovingLeft = false;
+            isMovingRight = true;
+            break;
+        //case SDLK_UP:
+        //    spriteY -= SPRITE_SPEEDU;
+        //    break;
+       // case SDLK_DOWN: 
+        //    spriteY += SPRITE_SPEEDU;
+        //    break;
+        case SDLK_f:
+            Bullet bullet;
+            bullet.x = spriteX + (gSprite->w - BULLET_WIDTH * 14);
+            bullet.y = spriteY;
+            bullets.push_back(bullet);
+            break;
         }
-    } 
+    }
     else if (e.type == SDL_KEYUP) 
     {
         switch (e.key.keysym.sym) 
         {
-            case SDLK_LEFT:
-                isMovingLeft = false;
-                break;
-            case SDLK_RIGHT:
-                isMovingRight = false;
-                break;
-            case SDLK_UP:
-                gSprite = SDL_LoadBMP("img/maybayk33.bmp");
-                break;
+        case SDLK_LEFT:
+            isMovingLeft = false;
+            break;
+        case SDLK_RIGHT:
+            isMovingRight = false;
+            break;
+        case SDLK_f:
+            gSprite = SDL_LoadBMP("img/maybayk33.bmp");
+            break;
+        }
+    }
+    else if (e.type == SDL_MOUSEBUTTONDOWN) 
+    {
+        if (gameOver) 
+        {
+            isMouseClicked = true;
         }
     }
 }
@@ -66,6 +79,16 @@ void renderText(const std::string& text, int x, int y)
         SDL_FreeSurface(textSurface);
     }
 }
+void createLightImage(int bossX, int bossY) 
+{
+    
+
+        LightImage lightImage;
+        lightImage.x = bossX + (gBossImage->w - gLightImage->w) / 2; // Ensure light image is centered on boss
+        lightImage.y = bossY + gBossImage->h - 100;
+        lightImages.push_back(lightImage);
+    
+}
 
 void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surface* gGameOverImage, SDL_Surface* gSprite, 
                 SDL_Surface* gBulletImage,std::vector<FallingImage>& fallingImages, std::vector<Bullet>& bullets, int& spriteX, 
@@ -82,7 +105,33 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
         SDL_Rect bulletRect = { bullet.x, bullet.y, BULLET_WIDTH, BULLET_HEIGHT };
         SDL_BlitSurface(gBulletImage, NULL, gScreenSurface, &bulletRect);
     }
-
+    for (auto lightIter = lightImages.begin(); lightIter != lightImages.end();) 
+    {
+        lightIter->y += 3;
+        if (lightIter->y > SCREEN_HEIGHT) 
+        {
+            lightIter = lightImages.erase(lightIter);
+        } 
+        else 
+        {
+            SDL_Rect lightRect = { lightIter->x, lightIter->y, 0, 0 };
+            SDL_BlitSurface(gLightImage, NULL, gScreenSurface, &lightRect);
+            ++lightIter;
+        }
+        int spriteW = gSprite->w;
+        int spriteH = gSprite->h;
+        int lightW = gLightImage->w;
+        int lightH = gLightImage->h;
+        if (checkCollision(spriteX, spriteY, spriteW, spriteH, lightIter->x, lightIter->y, lightW, lightH)) 
+        {
+            Blood --;
+            if(Blood == 0)
+            {
+               gameOver = true;
+               return;
+            }
+        } 
+    }
     for (int i = 0; i < NUM_FALLING_IMAGES; i++) 
     {
         fallingImages[i].y += FALLING_SPEED;
@@ -99,8 +148,8 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
         
         int spriteW = gSprite->w;
         int spriteH = gSprite->h;
-        int imageW = fallingImage->w; // sửa từ gFallingImage thành fallingImage
-        int imageH = fallingImage->h; // sửa từ gFallingImage thành fallingImage
+        int imageW = fallingImage->w;
+        int imageH = fallingImage->h;
         if (checkCollision(spriteX, spriteY, spriteW, spriteH, fallingImages[i].x, fallingImages[i].y, imageW, imageH)) 
         {
             Blood --;
@@ -114,8 +163,9 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
 
     SDL_Rect spriteRect = { spriteX, spriteY, 0, 0 };
     SDL_BlitSurface(gSprite, NULL, gScreenSurface, &spriteRect);
-    renderText("Time: " + std::to_string(Time), 10, 10); // Render Time at top-left corner
-    renderText("Points: " + std::to_string(Points), 200, 10); // Render Time at top-left corner
+    renderText("Time: " + std::to_string(Time), 10, 10);
+    renderText("Points: " + std::to_string(Points), 200, 10);
     renderText("Blood : " + std::to_string(Blood), 400, 10);
+    renderText("Level : " + std::to_string(Level), 400, 50);
     SDL_UpdateWindowSurface(gWindow);
 }
