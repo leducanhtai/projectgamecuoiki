@@ -50,9 +50,7 @@ void handleEvent(SDL_Event& e)
         case SDLK_RIGHT:
             isMovingRight = false;
             break;
-        case SDLK_f:
-            gSprite = SDL_LoadBMP("img/maybayk33.bmp");
-            break;
+        
         }
     }
     else if (e.type == SDL_MOUSEBUTTONDOWN) 
@@ -162,7 +160,9 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
     }
 
     SDL_Rect spriteRect = { spriteX, spriteY, 0, 0 };
-    SDL_BlitSurface(gSprite, NULL, gScreenSurface, &spriteRect);
+    SDL_Rect* currentClip = &gSpriteClips[currentFrame / 3];
+    SDL_BlitSurface(gSprite, currentClip, gScreenSurface, &spriteRect);
+    //SDL_BlitSurface(gSprite, NULL, gScreenSurface, &spriteRect);
     renderText("Time: " + std::to_string(Time), 10, 10);
     renderText("Points: " + std::to_string(Points), 200, 10);
     renderText("Blood : " + std::to_string(Blood), 400, 10);

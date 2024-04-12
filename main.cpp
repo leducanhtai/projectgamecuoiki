@@ -20,6 +20,8 @@ const int FALLING_SPEED = 1;
 const int NUM_FALLING_IMAGES = 2;
 const int BULLET_WIDTH = 3;
 const int BULLET_HEIGHT = 3;
+const int WALKING_ANIMATION_FRAMES = 3;
+SDL_Rect gSpriteClips[ WALKING_ANIMATION_FRAMES ];
 
 SDL_Window* gWindow = NULL;
 SDL_Surface* gScreenSurface = NULL;
@@ -55,7 +57,7 @@ int boss3Y = SCREEN_HEIGHT / 5;
 int bossDirection = 1;
 int boss2Direction = 1;
 int boss3Direction = 1;
-
+int currentFrame = 0;
 bool isBossVisible = false;
 
 std::vector<FallingImage> fallingImages;
@@ -107,10 +109,27 @@ bool loadMedia() {
         printf("Unable to load background image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
-    gSprite = SDL_LoadBMP("img/maybayk11.bmp");
+    gSprite = SDL_LoadBMP("img/nv22.bmp");
     if (gSprite == NULL) {
         printf("Unable to load sprite image! SDL Error: %s\n", SDL_GetError());
         success = false;
+    }
+    else{
+        gSpriteClips[ 0 ].x =   0;
+		gSpriteClips[ 0 ].y =   0;
+		gSpriteClips[ 0 ].w =  61;
+		gSpriteClips[ 0 ].h = 75;
+
+		gSpriteClips[ 1 ].x =  0;
+		gSpriteClips[ 1 ].y =   75;
+		gSpriteClips[ 1 ].w =  61;
+		gSpriteClips[ 1 ].h = 75;
+		
+		gSpriteClips[ 2 ].x = 0;
+		gSpriteClips[ 2 ].y =   150;
+		gSpriteClips[ 2 ].w =  61;
+		gSpriteClips[ 2 ].h = 75;
+
     }
     gBulletImage = SDL_LoadBMP("img/bullet.bmp");
     if (gBulletImage == NULL) {

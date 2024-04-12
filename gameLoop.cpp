@@ -56,12 +56,12 @@ void gameLoop()
                     SDL_GetMouseState(&mouseX, &mouseY);
                     if (mouseX >= gameOverRect.x && mouseX <= gameOverRect.x + gGameOverImage->w &&
                          mouseY >= gameOverRect.y && mouseY <= gameOverRect.y + gGameOverImage->h) 
-                         {
+                    {
                          gameOver = false;
                          Time = 0;
                          Points = 0;
                          Blood = 1000;
-                         Level =0;
+                         Level =1;
                          bullets.clear();
                          fallingImages.clear();
                          lightImages.clear();
@@ -87,19 +87,16 @@ void gameLoop()
                 if (isMovingLeft && spriteX > 0) 
                 {
                     spriteX -= SPRITE_SPEED;
-                    if (isSpriteFacingRight) {
-                        isSpriteFacingRight = false;
-                        changeSpriteImage(gSprite, isSpriteFacingRight);
-                    }
                 }
                 if (isMovingRight && spriteX < SCREEN_WIDTH - gSprite->w) 
                 {
                     spriteX += SPRITE_SPEED;
-                    if (!isSpriteFacingRight) {
-                        isSpriteFacingRight = true;
-                        changeSpriteImage(gSprite, isSpriteFacingRight);
-                    }
                 }
+                ++currentFrame;			
+			    if( currentFrame / 3 >= WALKING_ANIMATION_FRAMES )
+			    {
+					currentFrame = 0;
+			    }
                 lastUpdate = currentTime;
                 frames++;
             }

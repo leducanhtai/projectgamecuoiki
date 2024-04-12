@@ -12,6 +12,8 @@ extern const int SCREEN_HEIGHT;
 extern const int SPRITE_SPEED;
 extern const int BULLET_SPEED;
 extern const int FALLING_SPEED;
+extern const int WALKING_ANIMATION_FRAMES;
+extern SDL_Rect gSpriteClips[];//[ WALKING_ANIMATION_FRAMES ];
 
 extern bool isMovingLeft;
 extern bool isMovingRight;
@@ -39,6 +41,7 @@ extern int spriteY;
 extern int Time;
 extern int Points;
 extern int Level;
+extern int currentFrame;
 
 extern int Blood;
 extern int bossX;
