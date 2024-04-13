@@ -6,6 +6,8 @@ void LoadBoss()
         Level = 2;
         isBossVisible = true;
         SDL_Rect bossRect = { bossX, bossY, 0, 0 };
+        //SDL_Rect* currentClip = &gBossClips[currentFrame / 3];
+        //SDL_BlitSurface(gBossImage, currentClip, gScreenSurface, &bossRect);
         SDL_BlitSurface(gBossImage, NULL, gScreenSurface, &bossRect);
         createLightImage(bossX, bossY);
     }

@@ -20,8 +20,12 @@ const int FALLING_SPEED = 1;
 const int NUM_FALLING_IMAGES = 2;
 const int BULLET_WIDTH = 3;
 const int BULLET_HEIGHT = 3;
+const int HP_WIDTH = 30;
+const int HP_HEIGHT = 30;
+
 const int WALKING_ANIMATION_FRAMES = 3;
 SDL_Rect gSpriteClips[ WALKING_ANIMATION_FRAMES ];
+//SDL_Rect gBossClips[ WALKING_ANIMATION_FRAMES ];
 
 SDL_Window* gWindow = NULL;
 SDL_Surface* gScreenSurface = NULL;
@@ -33,8 +37,11 @@ SDL_Surface* gBossImage = NULL;
 SDL_Surface* gBoss2Image = NULL;
 SDL_Surface* gBoss3Image = NULL;
 SDL_Surface* gLightImage = NULL;
+SDL_Surface* gHPImage = NULL;
 TTF_Font* gFont = nullptr;
 
+int hpX = rand() % SCREEN_WIDTH;
+int hpY = 0;
 int spriteX = SCREEN_WIDTH / 2;
 int spriteY = SCREEN_HEIGHT - 100;
 bool isMovingLeft = false;
@@ -48,7 +55,7 @@ int Blood=2000;
 int Level = 1;
 
 int bossX = SCREEN_WIDTH / 2;
-int bossY = SCREEN_HEIGHT / 5;
+int bossY = SCREEN_HEIGHT / 10;
 int boss2X = SCREEN_WIDTH / 2;
 int boss2Y = SCREEN_HEIGHT / 5;
 int boss3X = SCREEN_WIDTH / 2;
@@ -59,6 +66,7 @@ int boss2Direction = 1;
 int boss3Direction = 1;
 int currentFrame = 0;
 bool isBossVisible = false;
+bool spawnHP = false;
 
 std::vector<FallingImage> fallingImages;
 std::vector<Bullet> bullets;
@@ -146,6 +154,23 @@ bool loadMedia() {
         printf("Unable to load boss image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
+   /* else{
+        gBossClips[ 0 ].x = 0;
+		gBossClips[ 0 ].y = 0;
+		gBossClips[ 0 ].w = 245;
+		gBossClips[ 0 ].h = 339;
+
+        gBossClips[ 1 ].x = 0;
+		gBossClips[ 1 ].y = 339;
+		gBossClips[ 1 ].w = 245;
+		gBossClips[ 1 ].h = 339;
+     
+        gBossClips[ 2 ].x = 9;
+		gBossClips[ 2 ].y = 678;
+		gBossClips[ 2 ].w = 245;
+		gBossClips[ 2 ].h = 339;
+
+    }*/
     gBoss2Image = SDL_LoadBMP("img/boss2.bmp");
     if (gBoss2Image == NULL) {
         printf("Unable to load boss2 image! SDL Error: %s\n", SDL_GetError());
@@ -159,6 +184,11 @@ bool loadMedia() {
     gLightImage = SDL_LoadBMP("img/light.bmp");
     if (gLightImage == NULL) {
     printf("Unable to load light image! SDL Error: %s\n", SDL_GetError());
+    success = false;
+    }
+    gHPImage = SDL_LoadBMP("img/hp.bmp");
+    if (gHPImage == NULL) {
+    printf("Unable to load hp image! SDL Error: %s\n", SDL_GetError());
     success = false;
     }
     return success;

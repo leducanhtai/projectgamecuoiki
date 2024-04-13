@@ -13,7 +13,11 @@ extern const int SPRITE_SPEED;
 extern const int BULLET_SPEED;
 extern const int FALLING_SPEED;
 extern const int WALKING_ANIMATION_FRAMES;
+extern const int HP_WIDTH;
+extern const int HP_HEIGHT;
+
 extern SDL_Rect gSpriteClips[];//[ WALKING_ANIMATION_FRAMES ];
+extern SDL_Rect gBossClips[];//[ WALKING_ANIMATION_FRAMES ];
 
 extern bool isMovingLeft;
 extern bool isMovingRight;
@@ -21,6 +25,7 @@ extern bool isSpriteFacingRight;
 extern bool gameOver;
 extern bool isBossVisible;
 extern bool isMouseClicked;
+extern bool spawnHP;
 
 extern SDL_Window* gWindow;
 extern SDL_Surface* gScreenSurface;
@@ -34,8 +39,11 @@ extern SDL_Surface* gBossImage;
 extern SDL_Surface* gBoss2Image;
 extern SDL_Surface* gBoss3Image;
 extern SDL_Surface* gLightImage;
+extern SDL_Surface* gHPImage;
 extern TTF_Font* gFont; 
 
+extern int hpX;
+extern int hpY;
 extern int spriteX;
 extern int spriteY;
 extern int Time;

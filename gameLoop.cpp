@@ -138,6 +138,24 @@ void gameLoop()
                     bulletIter++;
                 }
             }
+            if (spawnHP) {
+                hpY += 1.2; 
+                if (checkCollision(spriteX, spriteY, gSprite->w, gSprite->h, hpX, hpY, HP_WIDTH, HP_HEIGHT)) {
+                    Blood ++;
+                    // spawnHP = false;
+                }
+                if (hpY > SCREEN_HEIGHT){
+                    hpX = rand() % SCREEN_WIDTH;
+                    hpY = 0;
+                    spawnHP = false; 
+                }
+            } else {
+                if (Time % 5 == 0) { 
+                    hpX = rand() % SCREEN_WIDTH;
+                    hpY = 0;
+                    spawnHP = true; 
+                }
+            }
             moveEntity(bossX, bossDirection, gBossImage->w, SCREEN_WIDTH);
             moveEntity(boss2X, boss2Direction, gBoss2Image->w, SCREEN_WIDTH);
             moveEntity(boss3X, boss3Direction, gBoss3Image->w, SCREEN_WIDTH);

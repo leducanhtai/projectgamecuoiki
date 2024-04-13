@@ -96,7 +96,15 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
     SDL_BlitSurface(gBackground, NULL, gScreenSurface, NULL);
 
     LoadBoss();
-    
+    if (Time%5 == 0) 
+    {
+        SDL_Rect hpRect = { hpX, hpY, HP_WIDTH, HP_HEIGHT };
+        SDL_BlitSurface(gHPImage, NULL, gScreenSurface, &hpRect);
+    }
+    else
+    {
+        spawnHP = false;
+    }
     for (auto& bullet : bullets) 
     {
         bullet.y -= BULLET_SPEED;
