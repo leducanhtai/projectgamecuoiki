@@ -38,6 +38,7 @@ SDL_Surface* gBoss2Image = NULL;
 SDL_Surface* gBoss3Image = NULL;
 SDL_Surface* gLightImage = NULL;
 SDL_Surface* gHPImage = NULL;
+SDL_Surface* gMenu = NULL;
 TTF_Font* gFont = nullptr;
 
 int hpX = rand() % SCREEN_WIDTH;
@@ -67,6 +68,7 @@ int boss3Direction = 1;
 int currentFrame = 0;
 bool isBossVisible = false;
 bool spawnHP = false;
+bool gameStarted = false;
 
 std::vector<FallingImage> fallingImages;
 std::vector<Bullet> bullets;
@@ -191,6 +193,12 @@ bool loadMedia() {
     printf("Unable to load hp image! SDL Error: %s\n", SDL_GetError());
     success = false;
     }
+    gMenu = SDL_LoadBMP("img/menu.bmp");
+    if (gMenu == NULL) {
+        printf("Unable to load menu image! SDL Error: %s\n", SDL_GetError());
+        return false;
+    }
+
     return success;
 }
 
