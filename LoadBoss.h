@@ -16,5 +16,6 @@
 
 
 void LoadBoss();
+void moveEntity(int& entityX, int& entityDirection, int entityWidth, int screenWidth);
 
 #endif //LOADBOSS_H

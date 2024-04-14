@@ -66,7 +66,9 @@ int boss3Y = SCREEN_HEIGHT / 5;
 int bossDirection = 1;
 int boss2Direction = 1;
 int boss3Direction = 1;
+int backgroundY = 0;
 int currentFrame = 0;
+
 bool isBossVisible = false;
 bool spawnHP = false;
 
@@ -229,37 +231,26 @@ void close() {
     gMenu = NULL;
     SDL_FreeSurface(gGuide);
     gGuide = NULL;
+    SDL_FreeSurface(gLightImage);
+    gLightImage = NULL;
     SDL_Quit();
 }
-
-int main(int argc, char* args[]) 
+void LoadMenu(bool startGame)
 {
-    srand(time(NULL));
-    if (!init()) 
-    {
-        printf("Failed to initialize!\n");
-        return 1;
-    }
-    if (!loadMedia()) 
-    {
-        printf("Failed to load media!\n");
-        return 1;
-    }
     SDL_Rect menuRect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
     SDL_BlitSurface(gMenu, NULL, gScreenSurface, &menuRect);
     SDL_UpdateWindowSurface(gWindow);
-    bool startGame = false;
-    while (!startGame) 
+     while (!startGame) 
     {
         SDL_Event event;
         while (SDL_PollEvent(&event)) 
         {
-            if (event.type == SDL_QUIT) 
-            {
-                close();
-                return 0;
-            } 
-            else if (event.type == SDL_MOUSEBUTTONDOWN) 
+            //if (event.type == SDL_QUIT) 
+           // {
+            //    close();
+            //    return 0;
+            //} 
+            if (event.type == SDL_MOUSEBUTTONDOWN) 
             {
                 int mouseX, mouseY;
                 SDL_GetMouseState(&mouseX, &mouseY);
@@ -284,6 +275,23 @@ int main(int argc, char* args[])
             }
         }
     }
+}
+
+int main(int argc, char* args[]) 
+{
+    srand(time(NULL));
+    if (!init()) 
+    {
+        printf("Failed to initialize!\n");
+        return 1;
+    }
+    if (!loadMedia()) 
+    {
+        printf("Failed to load media!\n");
+        return 1;
+    }
+    bool startGame = false;
+    LoadMenu(startGame);
     FallingImage fallingImage;
     for (int i = 0; i < NUM_FALLING_IMAGES; i++) 
     {

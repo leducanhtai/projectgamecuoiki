@@ -50,6 +50,7 @@ extern int Time;
 extern int Points;
 extern int Level;
 extern int currentFrame;
+extern int backgroundY;
 
 extern int Blood;
 extern int bossX;

@@ -91,7 +91,10 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
                 int& spriteY, bool& isMovingLeft, bool& isMovingRight, bool& isSpriteFacingRight, bool& gameOver) 
 {
     SDL_FillRect(gScreenSurface, NULL, SDL_MapRGB(gScreenSurface->format, 0, 0, 0));
-    SDL_BlitSurface(gBackground, NULL, gScreenSurface, NULL);
+    SDL_Rect backgroundRect = { 0, backgroundY, SCREEN_WIDTH, SCREEN_HEIGHT };
+    SDL_BlitSurface(gBackground, NULL, gScreenSurface, &backgroundRect);
+    SDL_Rect nextBackgroundRect = { 0, backgroundY + SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT };
+    SDL_BlitSurface(gBackground, NULL, gScreenSurface, &nextBackgroundRect);
 
     LoadBoss();
     
@@ -112,7 +115,7 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
     }
     for (auto lightIter = lightImages.begin(); lightIter != lightImages.end();) 
     {
-        lightIter->y += 3;
+        lightIter->y += 2;
         if (lightIter->y > SCREEN_HEIGHT) 
         {
             lightIter = lightImages.erase(lightIter);

@@ -1,30 +1,6 @@
 #include "gameLoop.h"
 
-void changeSpriteImage(SDL_Surface* &gSprite, bool isSpriteFacingRight) 
-{
-    if (isSpriteFacingRight) 
-    {
-        gSprite = SDL_LoadBMP("img/maybayk11.bmp"); 
-    } 
-    else 
-    {
-        gSprite = SDL_LoadBMP("img/maybayk22.bmp"); 
-    }
-}
-void moveEntity(int& entityX, int& entityDirection, int entityWidth, int screenWidth) 
-{
-    entityX += entityDirection * 1;
-    if (entityX <= 0) 
-    {
-        entityX = 0;
-        entityDirection = 1;
-    } 
-    else if (entityX >= screenWidth - entityWidth) 
-    {
-        entityX = screenWidth - entityWidth;
-        entityDirection = -1;
-    }
-}
+
 void gameLoop() 
 {
     SDL_Event e;
@@ -63,8 +39,6 @@ void gameLoop()
                     if (mouseX >= gameOverRect.x && mouseX <= gameOverRect.x + gGameOverImage->w &&
                         mouseY >= gameOverRect.y && mouseY <= gameOverRect.y + gGameOverImage->h) 
                     {
-                        //mouseX >= startX && mouseX <= startX + gMenu->w && 
-                        //mouseY >= startY && mouseY <= startY + gMenu->h
                         gameOver = false;
                         Time = 0;
                         Points = 0;
@@ -91,6 +65,11 @@ void gameLoop()
             Uint32 currentTime = SDL_GetTicks();
             Uint32 deltaTime = currentTime - lastUpdate;
             Uint32 deltaSecond = currentTime - lastSecond;
+            backgroundY -= 1;
+            if (backgroundY <= -SCREEN_HEIGHT) 
+            {
+                backgroundY = 0;
+            }
             if (deltaTime >= FRAME_DELAY) {
                 if (isMovingLeft && spriteX > 0) 
                 {
@@ -146,10 +125,14 @@ void gameLoop()
                     bulletIter++;
                 }
             }
-            if (spawnHP) {
+            if (spawnHP) 
+            {
                 hpY += 1.2; 
                 if (checkCollision(spriteX, spriteY, gSprite->w, gSprite->h, hpX, hpY, HP_WIDTH, HP_HEIGHT)) {
-                   Blood ++;
+                   if(Blood <2000)
+                   {
+                       Blood ++;
+                   }
                 // spawnHP = false;
                 }
                 if (hpY > SCREEN_HEIGHT){

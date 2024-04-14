@@ -32,3 +32,18 @@ void LoadBoss()
         isBossVisible = false;
     }
 }
+
+void moveEntity(int& entityX, int& entityDirection, int entityWidth, int screenWidth) 
+{
+    entityX += entityDirection * 1;
+    if (entityX <= 0) 
+    {
+        entityX = 0;
+        entityDirection = 1;
+    } 
+    else if (entityX >= screenWidth - entityWidth) 
+    {
+        entityX = screenWidth - entityWidth;
+        entityDirection = -1;
+    }
+}
