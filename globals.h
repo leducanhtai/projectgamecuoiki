@@ -26,7 +26,6 @@ extern bool gameOver;
 extern bool isBossVisible;
 extern bool isMouseClicked;
 extern bool spawnHP;
-extern bool gameStarted;
 
 extern SDL_Window* gWindow;
 extern SDL_Surface* gScreenSurface;

@@ -79,8 +79,6 @@ void renderText(const std::string& text, int x, int y)
 }
 void createLightImage(int bossX, int bossY) 
 {
-    
-
         LightImage lightImage;
         lightImage.x = bossX + (gBossImage->w - gLightImage->w) / 2; // Ensure light image is centered on boss
         lightImage.y = bossY + gBossImage->h - 100;

@@ -39,6 +39,7 @@ SDL_Surface* gBoss3Image = NULL;
 SDL_Surface* gLightImage = NULL;
 SDL_Surface* gHPImage = NULL;
 SDL_Surface* gMenu = NULL;
+SDL_Surface* gGuide = NULL;
 TTF_Font* gFont = nullptr;
 
 int hpX = rand() % SCREEN_WIDTH;
@@ -68,7 +69,8 @@ int boss3Direction = 1;
 int currentFrame = 0;
 bool isBossVisible = false;
 bool spawnHP = false;
-bool gameStarted = false;
+
+bool isGuideVisible = true;
 
 std::vector<FallingImage> fallingImages;
 std::vector<Bullet> bullets;
@@ -198,7 +200,11 @@ bool loadMedia() {
         printf("Unable to load menu image! SDL Error: %s\n", SDL_GetError());
         return false;
     }
-
+    gGuide = SDL_LoadBMP("img/hd.bmp");
+    if (gGuide == NULL) {
+        printf("Unable to load guide image! SDL Error: %s\n", SDL_GetError());
+        success = false;
+    }
     return success;
 }
 
@@ -219,6 +225,10 @@ void close() {
     gBoss2Image = NULL;
     SDL_FreeSurface(gBoss3Image);
     gBoss3Image = NULL;
+    SDL_FreeSurface(gMenu);
+    gMenu = NULL;
+    SDL_FreeSurface(gGuide);
+    gGuide = NULL;
     SDL_Quit();
 }
 
@@ -234,6 +244,45 @@ int main(int argc, char* args[])
     {
         printf("Failed to load media!\n");
         return 1;
+    }
+    SDL_Rect menuRect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+    SDL_BlitSurface(gMenu, NULL, gScreenSurface, &menuRect);
+    SDL_UpdateWindowSurface(gWindow);
+    bool startGame = false;
+    while (!startGame) 
+    {
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) 
+        {
+            if (event.type == SDL_QUIT) 
+            {
+                close();
+                return 0;
+            } 
+            else if (event.type == SDL_MOUSEBUTTONDOWN) 
+            {
+                int mouseX, mouseY;
+                SDL_GetMouseState(&mouseX, &mouseY);
+                if (mouseX >= 200 && mouseX <= 410 && 
+                    mouseY >= 500 && mouseY <= 600) 
+                {
+                    startGame = true;
+                }
+                else if((mouseX >= 200 && mouseX <= 410 && 
+                        mouseY >= 650 && mouseY <= 750)&&isGuideVisible)
+                {
+                    SDL_Rect guideRect = {50, 600, SCREEN_WIDTH, SCREEN_HEIGHT };
+                    SDL_BlitSurface(gGuide, NULL, gScreenSurface, &guideRect);
+                    SDL_UpdateWindowSurface(gWindow);
+                    isGuideVisible=false;
+                }
+                else if(mouseX >= 460 && mouseX <= 530 && 
+                        mouseY >= 610 && mouseY <= 660)
+                {
+                    isGuideVisible=false;
+                }
+            }
+        }
     }
     FallingImage fallingImage;
     for (int i = 0; i < NUM_FALLING_IMAGES; i++) 
