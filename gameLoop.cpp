@@ -7,7 +7,7 @@ void gameLoop()
     Uint32 lastUpdate = SDL_GetTicks();
     Uint32 lastSecond = SDL_GetTicks();
     int frames = 0;
-    const Uint32 FRAME_DELAY = 500 / 60;
+    const Uint32 FRAME_DELAY = 1000 / 60;
         
     while (SDL_PollEvent(&e) != 0) {
         if (e.type == SDL_QUIT) {
@@ -42,7 +42,7 @@ void gameLoop()
                         gameOver = false;
                         Time = 0;
                         Points = 0;
-                        Blood = 1000;
+                        Blood = 2000;
                         Level =1;
                         bullets.clear();
                         fallingImages.clear();
@@ -65,8 +65,8 @@ void gameLoop()
             Uint32 currentTime = SDL_GetTicks();
             Uint32 deltaTime = currentTime - lastUpdate;
             Uint32 deltaSecond = currentTime - lastSecond;
-            backgroundY -= 1;
-            if (backgroundY <= -SCREEN_HEIGHT) 
+            backgroundY += 1 ;
+            if (backgroundY >= SCREEN_HEIGHT) 
             {
                 backgroundY = 0;
             }
@@ -96,35 +96,55 @@ void gameLoop()
             
             for (auto bulletIter = bullets.begin(); bulletIter != bullets.end();) 
             {
-                bool bulletRemoved = false;
-                for (auto& fallingImage : fallingImages) 
+                if (bulletIter->y < 0 || bulletIter->y > SCREEN_HEIGHT) 
                 {
-                    if (checkCollision(bulletIter->x, bulletIter->y, BULLET_WIDTH, BULLET_HEIGHT,
-                                   fallingImage.x, fallingImage.y, gSprite->w, gSprite->h))
+                   bulletIter = bullets.erase(bulletIter);
+                } 
+                else
+                {
+                    bool bulletRemoved = false;
+                    for (auto& fallingImage : fallingImages) 
                     {
+                        if (checkCollision(bulletIter->x, bulletIter->y, BULLET_WIDTH, BULLET_HEIGHT,
+                                   fallingImage.x, fallingImage.y, gSprite->w, gSprite->h))
+                        {
                     
+                            bulletIter = bullets.erase(bulletIter);
+                             bulletRemoved = true;
+                            fallingImage.x = rand() % SCREEN_WIDTH;
+                            fallingImage.y = rand() % (SCREEN_HEIGHT / 10);
+                            fallingImage.imagePath = getRandomFallingImage();
+                            Points++;
+                            break;
+                        }
+                    }
+                    if(isBossVisible && checkCollision(bulletIter->x, bulletIter->y, BULLET_WIDTH, 
+                                       BULLET_HEIGHT, bossX, bossY, gBossImage->w, gBossImage->h))
+                    {
                         bulletIter = bullets.erase(bulletIter);
                         bulletRemoved = true;
-                        // fallingImage = fallingImages.back();
-                        //fallingImages.pop_back();
-                         Points++;
-                        break;
+                        Points++;
+                    
+                    }
+            
+                    if (!bulletRemoved) 
+                    {
+                       bulletIter++;
                     }
                 }
-                if(isBossVisible && checkCollision(bulletIter->x, bulletIter->y, BULLET_WIDTH, 
-                                       BULLET_HEIGHT, bossX, bossY, gBossImage->w, gBossImage->h))
+            }
+            for (auto fallingImageIter = fallingImages.begin(); fallingImageIter != fallingImages.end();) 
+            {
+                if (fallingImageIter->y > SCREEN_HEIGHT) 
                 {
-                    bulletIter = bullets.erase(bulletIter);
-                    bulletRemoved = true;
-                    Points++;
-                    
-                }
-            
-                if (!bulletRemoved) 
+                    fallingImageIter = fallingImages.erase(fallingImageIter);
+                } 
+                else 
                 {
-                    bulletIter++;
+                    fallingImageIter++;
                 }
             }
+
             if (spawnHP) 
             {
                 hpY += 1.2; 
@@ -133,7 +153,6 @@ void gameLoop()
                    {
                        Blood ++;
                    }
-                // spawnHP = false;
                 }
                 if (hpY > SCREEN_HEIGHT){
                     hpX = rand() % SCREEN_WIDTH;
@@ -145,6 +164,25 @@ void gameLoop()
                     hpX = rand() % SCREEN_WIDTH;
                     hpY = 0;
                     spawnHP = true; 
+                 }
+            }
+            if (spawnShield) 
+            {
+                shieldY += 1.2; 
+                if (!immortal &&checkCollision(spriteX, spriteY, gSprite->w, gSprite->h, shieldX, shieldY, SHIELD_WIDTH, SHIELD_HEIGHT)) 
+                {
+                     immortal = true;
+                }
+                if (shieldY > SCREEN_HEIGHT){
+                    shieldX = rand() % SCREEN_WIDTH;
+                    shieldY = 0;
+                    spawnShield = false; 
+                }
+            } else {
+                if (Time % 10 == 0) { 
+                    shieldX = rand() % SCREEN_WIDTH;
+                    shieldY = 0;
+                    spawnShield = true; 
                  }
             }
             moveEntity(bossX, bossDirection, gBossImage->w, SCREEN_WIDTH);

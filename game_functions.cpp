@@ -80,10 +80,18 @@ void renderText(const std::string& text, int x, int y)
 void createLightImage(int bossX, int bossY) 
 {
         LightImage lightImage;
-        lightImage.x = bossX + (gBossImage->w - gLightImage->w) / 2; // Ensure light image is centered on boss
+        lightImage.x = bossX + (gBossImage->w - gLightImage->w) / 2; 
         lightImage.y = bossY + gBossImage->h - 100;
         lightImages.push_back(lightImage);
     
+}
+void renderBloodBar(int currentBlood, int maxBlood, int x, int y, int width, int height) {
+    
+    int bloodBarWidth = (currentBlood * width) / maxBlood;
+    SDL_Rect bloodBarRect = { x, y, width, height };
+    SDL_FillRect(gScreenSurface, &bloodBarRect, SDL_MapRGB(gScreenSurface->format, 255, 0, 0));
+    SDL_Rect remainingBloodhRect = { x, y, bloodBarWidth, height };
+    SDL_FillRect(gScreenSurface, &remainingBloodhRect, SDL_MapRGB(gScreenSurface->format, 0, 255, 0));
 }
 
 void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surface* gGameOverImage, SDL_Surface* gSprite, 
@@ -93,7 +101,7 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
     SDL_FillRect(gScreenSurface, NULL, SDL_MapRGB(gScreenSurface->format, 0, 0, 0));
     SDL_Rect backgroundRect = { 0, backgroundY, SCREEN_WIDTH, SCREEN_HEIGHT };
     SDL_BlitSurface(gBackground, NULL, gScreenSurface, &backgroundRect);
-    SDL_Rect nextBackgroundRect = { 0, backgroundY + SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT };
+    SDL_Rect nextBackgroundRect = { 0, backgroundY - SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT };
     SDL_BlitSurface(gBackground, NULL, gScreenSurface, &nextBackgroundRect);
 
     LoadBoss();
@@ -103,10 +111,10 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
        SDL_Rect hpRect = { hpX, hpY, HP_WIDTH, HP_HEIGHT };
        SDL_BlitSurface(gHPImage, NULL, gScreenSurface, &hpRect);
     }
-    //else
-    //{
-    //    spawnHP = false;
-    //}
+    if (spawnShield) {
+        SDL_Rect shieldRect = { shieldX, shieldY, SHIELD_WIDTH, SHIELD_HEIGHT };
+        SDL_BlitSurface(gShield, NULL, gScreenSurface, &shieldRect);
+    }
     for (auto& bullet : bullets) 
     {
         bullet.y -= BULLET_SPEED;
@@ -173,6 +181,7 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
     SDL_Rect* currentClip = &gSpriteClips[currentFrame / 3];
     SDL_BlitSurface(gSprite, currentClip, gScreenSurface, &spriteRect);
     //SDL_BlitSurface(gSprite, NULL, gScreenSurface, &spriteRect);
+    renderBloodBar(Blood, 2000, spriteX + 50, spriteY - 10, gSprite->w, 5);
     renderText("Time: " + std::to_string(Time), 10, 10);
     renderText("Points: " + std::to_string(Points), 200, 10);
     renderText("Blood : " + std::to_string(Blood), 400, 10);

@@ -14,7 +14,6 @@
 #include "randomFalling.h"
 
 
-
 void LoadBoss();
 void moveEntity(int& entityX, int& entityDirection, int entityWidth, int screenWidth);
 

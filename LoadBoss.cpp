@@ -1,7 +1,27 @@
 #include "LoadBoss.h"
+
+int bossX = SCREEN_WIDTH / 2;
+int bossY = SCREEN_HEIGHT / 10;
+
+int boss2X = SCREEN_WIDTH / 2;
+int boss2Y = SCREEN_HEIGHT / 5;
+
+int boss3X = SCREEN_WIDTH / 2;
+int boss3Y = SCREEN_HEIGHT / 5;
+
+int bossDirection = 1;
+int boss2Direction = 1;
+int boss3Direction = 1;
+
+int bossBlood = 20;
+int boss2Blood = 40;
+int boss3Blood = 50;
+
+bool isBossVisible = false;
+
 void LoadBoss()
 {
-    if (Points >= 10 && Points <= 40) 
+    if (Points >= 10 && Points <= 40 && bossBlood > 0) 
     { 
         Level = 2;
         isBossVisible = true;
@@ -11,7 +31,7 @@ void LoadBoss()
         SDL_BlitSurface(gBossImage, NULL, gScreenSurface, &bossRect);
         createLightImage(bossX, bossY);
     }
-    else if(Points >= 60 && Points <= 80 )
+    else if(Points >= 60 && Points <= 80 && boss2Blood > 0)
     {
         Level = 3;
         isBossVisible = true;
@@ -19,7 +39,7 @@ void LoadBoss()
         SDL_BlitSurface(gBoss2Image, NULL, gScreenSurface, &boss2Rect);
         createLightImage(boss2X, boss2Y);
     }
-    else if(Points >=100 && Points <= 150)
+    else if(Points >=100 && Points <= 150 && boss3Blood > 0)
     {
         Level = 4;
         isBossVisible = true;

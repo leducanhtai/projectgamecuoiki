@@ -15,6 +15,8 @@ extern const int FALLING_SPEED;
 extern const int WALKING_ANIMATION_FRAMES;
 extern const int HP_WIDTH;
 extern const int HP_HEIGHT;
+extern const int SHIELD_WIDTH;
+extern const int SHIELD_HEIGHT;
 
 extern SDL_Rect gSpriteClips[];//[ WALKING_ANIMATION_FRAMES ];
 extern SDL_Rect gBossClips[];//[ WALKING_ANIMATION_FRAMES ];
@@ -26,6 +28,8 @@ extern bool gameOver;
 extern bool isBossVisible;
 extern bool isMouseClicked;
 extern bool spawnHP;
+extern bool spawnShield;
+extern bool immortal;
 
 extern SDL_Window* gWindow;
 extern SDL_Surface* gScreenSurface;
@@ -40,10 +44,15 @@ extern SDL_Surface* gBoss2Image;
 extern SDL_Surface* gBoss3Image;
 extern SDL_Surface* gLightImage;
 extern SDL_Surface* gHPImage;
+extern SDL_Surface* gShield;
+extern SDL_Surface* gProtect;
+
 extern TTF_Font* gFont; 
 
 extern int hpX;
 extern int hpY;
+extern int shieldX;
+extern int shieldY;
 extern int spriteX;
 extern int spriteY;
 extern int Time;
@@ -78,6 +87,7 @@ struct FallingImage {
 struct Bullet {
     int x, y;
 };
+
 struct LightImage {
     int x, y;
 };

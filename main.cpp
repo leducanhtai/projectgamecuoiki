@@ -14,7 +14,7 @@
 
 const int SCREEN_WIDTH = 600;
 const int SCREEN_HEIGHT = 1067;
-const int SPRITE_SPEED = 3;
+const int SPRITE_SPEED = 6;
 const int BULLET_SPEED = 2;
 const int FALLING_SPEED = 1;
 const int NUM_FALLING_IMAGES = 2;
@@ -22,6 +22,8 @@ const int BULLET_WIDTH = 3;
 const int BULLET_HEIGHT = 3;
 const int HP_WIDTH = 30;
 const int HP_HEIGHT = 30;
+const int SHIELD_WIDTH = 30;
+const int SHIELD_HEIGHT = 30;
 
 const int WALKING_ANIMATION_FRAMES = 3;
 SDL_Rect gSpriteClips[ WALKING_ANIMATION_FRAMES ];
@@ -40,10 +42,14 @@ SDL_Surface* gLightImage = NULL;
 SDL_Surface* gHPImage = NULL;
 SDL_Surface* gMenu = NULL;
 SDL_Surface* gGuide = NULL;
+SDL_Surface* gShield = NULL;
+SDL_Surface* gProtect = NULL;
 TTF_Font* gFont = nullptr;
 
 int hpX = rand() % SCREEN_WIDTH;
 int hpY = 0;
+int shieldX = rand() % SCREEN_WIDTH;
+int shieldY = 0;
 int spriteX = SCREEN_WIDTH / 2;
 int spriteY = SCREEN_HEIGHT - 100;
 bool isMovingLeft = false;
@@ -56,23 +62,13 @@ int Points = 0;
 int Blood=2000;
 int Level = 1;
 
-int bossX = SCREEN_WIDTH / 2;
-int bossY = SCREEN_HEIGHT / 10;
-int boss2X = SCREEN_WIDTH / 2;
-int boss2Y = SCREEN_HEIGHT / 5;
-int boss3X = SCREEN_WIDTH / 2;
-int boss3Y = SCREEN_HEIGHT / 5;
 
-int bossDirection = 1;
-int boss2Direction = 1;
-int boss3Direction = 1;
 int backgroundY = 0;
 int currentFrame = 0;
-
-bool isBossVisible = false;
 bool spawnHP = false;
-
 bool isGuideVisible = true;
+bool spawnShield = false;
+bool immortal = false;
 
 std::vector<FallingImage> fallingImages;
 std::vector<Bullet> bullets;
@@ -118,7 +114,7 @@ bool init() {
 
 bool loadMedia() {
     bool success = true;
-    gBackground = SDL_LoadBMP("img/background1.bmp");
+    gBackground = SDL_LoadBMP("img/background.bmp");
     if (gBackground == NULL) {
         printf("Unable to load background image! SDL Error: %s\n", SDL_GetError());
         success = false;
@@ -160,23 +156,6 @@ bool loadMedia() {
         printf("Unable to load boss image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
-   /* else{
-        gBossClips[ 0 ].x = 0;
-		gBossClips[ 0 ].y = 0;
-		gBossClips[ 0 ].w = 245;
-		gBossClips[ 0 ].h = 339;
-
-        gBossClips[ 1 ].x = 0;
-		gBossClips[ 1 ].y = 339;
-		gBossClips[ 1 ].w = 245;
-		gBossClips[ 1 ].h = 339;
-     
-        gBossClips[ 2 ].x = 9;
-		gBossClips[ 2 ].y = 678;
-		gBossClips[ 2 ].w = 245;
-		gBossClips[ 2 ].h = 339;
-
-    }*/
     gBoss2Image = SDL_LoadBMP("img/boss2.bmp");
     if (gBoss2Image == NULL) {
         printf("Unable to load boss2 image! SDL Error: %s\n", SDL_GetError());
@@ -207,6 +186,16 @@ bool loadMedia() {
         printf("Unable to load guide image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
+    gShield = SDL_LoadBMP("img/khien.bmp");
+    if (gShield == NULL) {
+        printf("Unable to load shield image! SDL Error: %s\n", SDL_GetError());
+        success = false;
+    }
+    gProtect = SDL_LoadBMP("img/lachan.bmp");
+    if (gProtect == NULL) {
+        printf("Unable to load protect image! SDL Error: %s\n", SDL_GetError());
+        success = false;
+    }
     return success;
 }
 
@@ -233,6 +222,10 @@ void close() {
     gGuide = NULL;
     SDL_FreeSurface(gLightImage);
     gLightImage = NULL;
+    SDL_FreeSurface(gShield);
+    gShield = NULL;
+    SDL_FreeSurface(gProtect);
+    gProtect = NULL;
     SDL_Quit();
 }
 void LoadMenu(bool startGame)
@@ -245,11 +238,7 @@ void LoadMenu(bool startGame)
         SDL_Event event;
         while (SDL_PollEvent(&event)) 
         {
-            //if (event.type == SDL_QUIT) 
-           // {
-            //    close();
-            //    return 0;
-            //} 
+
             if (event.type == SDL_MOUSEBUTTONDOWN) 
             {
                 int mouseX, mouseY;
@@ -267,11 +256,11 @@ void LoadMenu(bool startGame)
                     SDL_UpdateWindowSurface(gWindow);
                     isGuideVisible=false;
                 }
-                else if(mouseX >= 460 && mouseX <= 530 && 
-                        mouseY >= 610 && mouseY <= 660)
-                {
-                    isGuideVisible=false;
-                }
+                //else if(mouseX >= 460 && mouseX <= 530 && 
+                //        mouseY >= 610 && mouseY <= 660)
+                //{
+                //    isGuideVisible=false;
+                //}
             }
         }
     }
