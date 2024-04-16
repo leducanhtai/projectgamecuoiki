@@ -115,6 +115,19 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
         SDL_Rect shieldRect = { shieldX, shieldY, SHIELD_WIDTH, SHIELD_HEIGHT };
         SDL_BlitSurface(gShield, NULL, gScreenSurface, &shieldRect);
     }
+    if (immortal) {
+        if (!isProtectVisible) {
+           isProtectVisible = true;
+           protectStartTime = SDL_GetTicks();
+        }
+        if (SDL_GetTicks() - protectStartTime < 5000) { // Hiển thị trong 5 giây
+            SDL_Rect protectRect = { spriteX - 20, spriteY- 20, 0, 0 };
+            SDL_BlitSurface(gProtect, NULL, gScreenSurface, &protectRect);
+        } else {
+            immortal = false; // Reset lại biến immortal sau khi hết thời gian
+            isProtectVisible = false; // Ẩn hình ảnh protect
+        }
+    }
     for (auto& bullet : bullets) 
     {
         bullet.y -= BULLET_SPEED;
@@ -140,11 +153,14 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
         int lightH = gLightImage->h;
         if (checkCollision(spriteX, spriteY, spriteW, spriteH, lightIter->x, lightIter->y, lightW, lightH)) 
         {
-            Blood --;
-            if(Blood == 0)
+            if(!immortal)
             {
-               gameOver = true;
-               return;
+               Blood --;
+               if(Blood == 0)
+               {
+                  gameOver = true;
+                  return;
+               }
             }
         } 
     }
@@ -166,13 +182,16 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
         int spriteH = gSprite->h;
         int imageW = fallingImage->w;
         int imageH = fallingImage->h;
-        if (checkCollision(spriteX, spriteY, spriteW, spriteH, fallingImages[i].x, fallingImages[i].y, imageW, imageH)) 
+        if ( checkCollision(spriteX, spriteY, spriteW, spriteH, fallingImages[i].x, fallingImages[i].y, imageW, imageH)) 
         {
-            Blood --;
-            if(Blood == 0)
+            if(!immortal)
             {
-               gameOver = true;
-               return;
+               Blood --;
+               if(Blood == 0)
+               {
+                  gameOver = true;
+                  return;
+               }
             }
         }
     }
@@ -181,7 +200,7 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
     SDL_Rect* currentClip = &gSpriteClips[currentFrame / 3];
     SDL_BlitSurface(gSprite, currentClip, gScreenSurface, &spriteRect);
     //SDL_BlitSurface(gSprite, NULL, gScreenSurface, &spriteRect);
-    renderBloodBar(Blood, 2000, spriteX + 50, spriteY - 10, gSprite->w, 5);
+    renderBloodBar(Blood, 500, spriteX + 50, spriteY - 10, gSprite->w, 5);
     renderText("Time: " + std::to_string(Time), 10, 10);
     renderText("Points: " + std::to_string(Points), 200, 10);
     renderText("Blood : " + std::to_string(Blood), 400, 10);

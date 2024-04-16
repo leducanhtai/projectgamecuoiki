@@ -30,6 +30,8 @@ extern bool isMouseClicked;
 extern bool spawnHP;
 extern bool spawnShield;
 extern bool immortal;
+extern bool isProtectVisible;
+extern Uint32 protectStartTime;
 
 extern SDL_Window* gWindow;
 extern SDL_Surface* gScreenSurface;

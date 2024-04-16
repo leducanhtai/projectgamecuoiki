@@ -17,7 +17,7 @@ const int SCREEN_HEIGHT = 1067;
 const int SPRITE_SPEED = 6;
 const int BULLET_SPEED = 2;
 const int FALLING_SPEED = 1;
-const int NUM_FALLING_IMAGES = 2;
+const int NUM_FALLING_IMAGES = 4;
 const int BULLET_WIDTH = 3;
 const int BULLET_HEIGHT = 3;
 const int HP_WIDTH = 30;
@@ -59,7 +59,7 @@ bool isMouseClicked = false;
 bool gameOver = false;
 int Time = 0;
 int Points = 0;
-int Blood=2000;
+int Blood=500;
 int Level = 1;
 
 
@@ -69,6 +69,8 @@ bool spawnHP = false;
 bool isGuideVisible = true;
 bool spawnShield = false;
 bool immortal = false;
+bool isProtectVisible = false;
+Uint32 protectStartTime = 0;
 
 std::vector<FallingImage> fallingImages;
 std::vector<Bullet> bullets;

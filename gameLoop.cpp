@@ -42,7 +42,7 @@ void gameLoop()
                         gameOver = false;
                         Time = 0;
                         Points = 0;
-                        Blood = 2000;
+                        Blood = 500;
                         Level =1;
                         bullets.clear();
                         fallingImages.clear();
@@ -118,15 +118,36 @@ void gameLoop()
                             break;
                         }
                     }
-                    if(isBossVisible && checkCollision(bulletIter->x, bulletIter->y, BULLET_WIDTH, 
+                    if (Points >= 10 && Points <= 40 ){
+                        if(isBossVisible && checkCollision(bulletIter->x, bulletIter->y, BULLET_WIDTH, 
                                        BULLET_HEIGHT, bossX, bossY, gBossImage->w, gBossImage->h))
-                    {
-                        bulletIter = bullets.erase(bulletIter);
-                        bulletRemoved = true;
-                        Points++;
+                        {
+                            bulletIter = bullets.erase(bulletIter);
+                            bulletRemoved = true;
+                            Points++;
                     
+                        }
                     }
-            
+                    if (Points >= 60 && Points <= 80 ){
+                        if(isBossVisible && checkCollision(bulletIter->x, bulletIter->y, BULLET_WIDTH, 
+                                       BULLET_HEIGHT, boss2X, boss2Y, gBoss2Image->w, gBoss2Image->h))
+                        {
+                            bulletIter = bullets.erase(bulletIter);
+                            bulletRemoved = true;
+                            Points++;
+                    
+                        }
+                    }
+                    if (Points >= 100 && Points <= 150 ){
+                        if(isBossVisible && checkCollision(bulletIter->x, bulletIter->y, BULLET_WIDTH, 
+                                       BULLET_HEIGHT, boss3X, boss3Y, gBoss3Image->w, gBoss3Image->h))
+                        {
+                            bulletIter = bullets.erase(bulletIter);
+                            bulletRemoved = true;
+                            Points++;
+                    
+                        }
+                    }
                     if (!bulletRemoved) 
                     {
                        bulletIter++;
@@ -149,7 +170,7 @@ void gameLoop()
             {
                 hpY += 1.2; 
                 if (checkCollision(spriteX, spriteY, gSprite->w, gSprite->h, hpX, hpY, HP_WIDTH, HP_HEIGHT)) {
-                   if(Blood <2000)
+                   if(Blood <= 500)
                    {
                        Blood ++;
                    }
@@ -179,17 +200,18 @@ void gameLoop()
                     spawnShield = false; 
                 }
             } else {
-                if (Time % 10 == 0) { 
+                if (Time % 7 == 0) { 
                     shieldX = rand() % SCREEN_WIDTH;
                     shieldY = 0;
                     spawnShield = true; 
                  }
             }
-            moveEntity(bossX, bossDirection, gBossImage->w, SCREEN_WIDTH);
-            moveEntity(boss2X, boss2Direction, gBoss2Image->w, SCREEN_WIDTH);
-            moveEntity(boss3X, boss3Direction, gBoss3Image->w, SCREEN_WIDTH);
+            
+            if (Points >= 10 && Points <= 40 ) moveEntity(bossX, bossDirection, gBossImage->w, SCREEN_WIDTH);
+            if (Points >= 60 && Points <= 80 ) moveEntity(boss2X, boss2Direction, gBoss2Image->w, SCREEN_WIDTH);
+            if (Points >= 100 && Points <= 150 ) moveEntity(boss3X, boss3Direction, gBoss3Image->w, SCREEN_WIDTH);
             renderGame(gScreenSurface, gBackground, gGameOverImage, gSprite, gBulletImage, fallingImages,
                 bullets, spriteX, spriteY, isMovingLeft, isMovingRight, isSpriteFacingRight, gameOver);
         }
     }
-}
+} 
