@@ -1,6 +1,7 @@
 #include <iostream>
 #include "src/include/SDL2/SDL.h"
 #include "src/include/SDL2/SDL_ttf.h"
+#include "src/include/SDL2/SDL_mixer.h"
 #include <stdio.h>
 #include <vector>
 #include <cstdlib>
@@ -18,8 +19,8 @@ const int SPRITE_SPEED = 6;
 const int BULLET_SPEED = 2;
 const int FALLING_SPEED = 1;
 const int NUM_FALLING_IMAGES = 4;
-const int BULLET_WIDTH = 3;
-const int BULLET_HEIGHT = 3;
+const int BULLET_WIDTH = 10;
+const int BULLET_HEIGHT = 10;
 const int HP_WIDTH = 30;
 const int HP_HEIGHT = 30;
 const int SHIELD_WIDTH = 30;
@@ -45,7 +46,12 @@ SDL_Surface* gGuide = NULL;
 SDL_Surface* gShield = NULL;
 SDL_Surface* gProtect = NULL;
 SDL_Surface* gExplosionImage = NULL;
+
 TTF_Font* gFont = nullptr;
+Mix_Chunk* soundBullet = nullptr;
+Mix_Chunk* soundExplosionSmall = nullptr;
+Mix_Chunk* soundWarning = nullptr;
+//Mix_Music* soundBackground = nullptr;
 
 int hpX = rand() % SCREEN_WIDTH;
 int hpY = 0;
@@ -113,6 +119,12 @@ bool init() {
             success = false;
         }
     }
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+        return false;
+    }
+    
+
     return success;
 }
 
@@ -172,13 +184,13 @@ bool loadMedia() {
     }
     gLightImage = SDL_LoadBMP("img/light.bmp");
     if (gLightImage == NULL) {
-    printf("Unable to load light image! SDL Error: %s\n", SDL_GetError());
-    success = false;
+        printf("Unable to load light image! SDL Error: %s\n", SDL_GetError());
+        success = false;
     }
     gHPImage = SDL_LoadBMP("img/hp.bmp");
     if (gHPImage == NULL) {
-    printf("Unable to load hp image! SDL Error: %s\n", SDL_GetError());
-    success = false;
+        printf("Unable to load hp image! SDL Error: %s\n", SDL_GetError());
+        success = false;
     }
     gMenu = SDL_LoadBMP("img/menu.bmp");
     if (gMenu == NULL) {
@@ -205,6 +217,27 @@ bool loadMedia() {
         printf("Unable to load explosion image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
+    soundBullet = Mix_LoadWAV("sound/soundBullet.wav");
+    if (soundBullet == nullptr) {
+        printf("Failed to load bullet sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+        success = false;
+    }
+    soundExplosionSmall = Mix_LoadWAV("sound/soundExplosion1.wav");
+    if (soundExplosionSmall == nullptr) {
+        printf("Failed to load bullet sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+        success = false;
+    }
+    soundWarning = Mix_LoadWAV("sound/soundWarning.wav");
+    if (soundWarning == nullptr) {
+        printf("Failed to load bullet sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+        success = false;
+    }
+    //soundBackground = Mix_LoadMUS("sound/soundBackground.wav");
+   // if (soundBackground == nullptr) {
+    //    printf("Failed to load background sound! SDL_mixer Error: %s\n", Mix_GetError());
+    //    success = false;
+    //}
+    //Mix_PlayMusic(soundBackground, -1);
     return success;
 }
 
@@ -235,6 +268,14 @@ void close() {
     gShield = NULL;
     SDL_FreeSurface(gProtect);
     gProtect = NULL;
+    Mix_FreeChunk(soundBullet);
+    soundBullet = nullptr;
+    Mix_FreeChunk(soundExplosionSmall);
+    soundExplosionSmall = nullptr;
+    Mix_FreeChunk(soundWarning);
+    soundWarning = nullptr;
+   // Mix_FreeMusic(soundBackground);
+    //soundBackground = nullptr;
     SDL_Quit();
 }
 void LoadMenu(bool startGame)

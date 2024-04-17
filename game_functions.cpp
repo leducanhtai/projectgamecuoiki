@@ -34,9 +34,10 @@ void handleEvent(SDL_Event& e)
         //    break;
         case SDLK_f:
             Bullet bullet;
-            bullet.x = spriteX + (gSprite->w - BULLET_WIDTH * 14);
+            bullet.x = spriteX + (gSprite->w - BULLET_WIDTH - 35);
             bullet.y = spriteY;
             bullets.push_back(bullet);
+            Mix_PlayChannel(-1, soundBullet, 0);
             break;
         }
     }
@@ -120,12 +121,12 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
            isProtectVisible = true;
            protectStartTime = SDL_GetTicks();
         }
-        if (SDL_GetTicks() - protectStartTime < 5000) { // Hiển thị trong 5 giây
+        if (SDL_GetTicks() - protectStartTime < 5000) {
             SDL_Rect protectRect = { spriteX - 20, spriteY- 20, 0, 0 };
             SDL_BlitSurface(gProtect, NULL, gScreenSurface, &protectRect);
         } else {
-            immortal = false; // Reset lại biến immortal sau khi hết thời gian
-            isProtectVisible = false; // Ẩn hình ảnh protect
+            immortal = false;
+            isProtectVisible = false;
         }
     }
     for (auto& bullet : bullets) 
@@ -207,6 +208,7 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
         {                             
             SDL_Rect explosionRect = { explosion.x, explosion.y, 0, 0 };                  
             SDL_BlitSurface(gExplosionImage, NULL, gScreenSurface, &explosionRect);
+           // Mix_PlayChannel(-1, soundExplosionSmall, 0);
         }    
     }
     renderText("Time: " + std::to_string(Time), 10, 10);

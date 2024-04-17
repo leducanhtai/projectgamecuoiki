@@ -22,6 +22,7 @@ void gameLoop()
         }
         if (gameOver) 
         {
+            
             SDL_Rect gameOverRect = { (SCREEN_WIDTH - gGameOverImage->w) / 2, 
                                   (SCREEN_HEIGHT - gGameOverImage->h) / 2, 0, 0 };
             SDL_BlitSurface(gGameOverImage, NULL, gScreenSurface, &gameOverRect);
@@ -48,6 +49,7 @@ void gameLoop()
                         fallingImages.clear();
                         lightImages.clear();
                         spawnHP=false;
+                        spawnShield = false;
                         for (int i = 0; i < NUM_FALLING_IMAGES; i++) 
                         {
                             FallingImage fallingImage;
@@ -113,6 +115,7 @@ void gameLoop()
                             explosion.y = fallingImage.y;
                             explosion.startTime = SDL_GetTicks();
                             explosions.push_back(explosion);
+                            Mix_PlayChannel(-1, soundExplosionSmall, 0);
                     
                             bulletIter = bullets.erase(bulletIter);
                             bulletRemoved = true;

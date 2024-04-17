@@ -23,6 +23,7 @@ void LoadBoss()
 {
     if (Points >= 10 && Points <= 40 && bossBlood > 0) 
     { 
+        //Mix_PlayChannel(-1, soundWarning, 0);
         Level = 2;
         isBossVisible = true;
         SDL_Rect bossRect = { bossX, bossY, 0, 0 };
@@ -33,6 +34,7 @@ void LoadBoss()
     }
     else if(Points >= 60 && Points <= 80 && boss2Blood > 0)
     {
+        //Mix_PlayChannel(-1, soundWarning, 0);
         Level = 3;
         isBossVisible = true;
         SDL_Rect boss2Rect = { boss2X, boss2Y, 0, 0 };
@@ -41,6 +43,7 @@ void LoadBoss()
     }
     else if(Points >=100 && Points <= 150 && boss3Blood > 0)
     {
+        //Mix_PlayChannel(-1, soundWarning, 0);
         Level = 4;
         isBossVisible = true;
         SDL_Rect boss3Rect = { boss3X, boss3Y, 0, 0 };

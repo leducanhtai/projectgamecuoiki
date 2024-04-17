@@ -4,6 +4,7 @@
 
 #include "src/include/SDL2/SDL.h"
 #include "src/include/SDL2/SDL_ttf.h"
+#include "src/include/SDL2/SDL_mixer.h"
 #include <vector>
 #include <string>
 
@@ -51,6 +52,10 @@ extern SDL_Surface* gProtect;
 extern SDL_Surface* gExplosionImage;
 
 extern TTF_Font* gFont; 
+extern Mix_Chunk* soundBullet;
+extern Mix_Chunk* soundExplosionSmall;
+//extern Mix_Music* soundBackground;
+extern Mix_Chunk* soundWarning;
 
 extern int hpX;
 extern int hpY;
