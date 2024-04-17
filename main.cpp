@@ -44,6 +44,7 @@ SDL_Surface* gMenu = NULL;
 SDL_Surface* gGuide = NULL;
 SDL_Surface* gShield = NULL;
 SDL_Surface* gProtect = NULL;
+SDL_Surface* gExplosionImage = NULL;
 TTF_Font* gFont = nullptr;
 
 int hpX = rand() % SCREEN_WIDTH;
@@ -75,6 +76,7 @@ Uint32 protectStartTime = 0;
 std::vector<FallingImage> fallingImages;
 std::vector<Bullet> bullets;
 std::vector<LightImage> lightImages;
+std::vector<Explosion> explosions;
 
 bool init() {
     bool success = true;
@@ -196,6 +198,11 @@ bool loadMedia() {
     gProtect = SDL_LoadBMP("img/lachan.bmp");
     if (gProtect == NULL) {
         printf("Unable to load protect image! SDL Error: %s\n", SDL_GetError());
+        success = false;
+    }
+    gExplosionImage = SDL_LoadBMP("img/explode.bmp");
+    if (gExplosionImage == NULL) {
+        printf("Unable to load explosion image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
     return success;

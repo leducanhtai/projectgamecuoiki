@@ -201,6 +201,14 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
     SDL_BlitSurface(gSprite, currentClip, gScreenSurface, &spriteRect);
     //SDL_BlitSurface(gSprite, NULL, gScreenSurface, &spriteRect);
     renderBloodBar(Blood, 500, spriteX + 50, spriteY - 10, gSprite->w, 5);
+    for (auto& explosion : explosions) 
+    {
+        if (SDL_GetTicks() - explosion.startTime < 1000) 
+        {                             
+            SDL_Rect explosionRect = { explosion.x, explosion.y, 0, 0 };                  
+            SDL_BlitSurface(gExplosionImage, NULL, gScreenSurface, &explosionRect);
+        }    
+    }
     renderText("Time: " + std::to_string(Time), 10, 10);
     renderText("Points: " + std::to_string(Points), 200, 10);
     renderText("Blood : " + std::to_string(Blood), 400, 10);

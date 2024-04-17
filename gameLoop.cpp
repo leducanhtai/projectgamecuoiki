@@ -108,9 +108,14 @@ void gameLoop()
                         if (checkCollision(bulletIter->x, bulletIter->y, BULLET_WIDTH, BULLET_HEIGHT,
                                    fallingImage.x, fallingImage.y, gSprite->w, gSprite->h))
                         {
+                            Explosion explosion;
+                            explosion.x = fallingImage.x;
+                            explosion.y = fallingImage.y;
+                            explosion.startTime = SDL_GetTicks();
+                            explosions.push_back(explosion);
                     
                             bulletIter = bullets.erase(bulletIter);
-                             bulletRemoved = true;
+                            bulletRemoved = true;
                             fallingImage.x = rand() % SCREEN_WIDTH;
                             fallingImage.y = rand() % (SCREEN_HEIGHT / 10);
                             fallingImage.imagePath = getRandomFallingImage();

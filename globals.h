@@ -48,6 +48,7 @@ extern SDL_Surface* gLightImage;
 extern SDL_Surface* gHPImage;
 extern SDL_Surface* gShield;
 extern SDL_Surface* gProtect;
+extern SDL_Surface* gExplosionImage;
 
 extern TTF_Font* gFont; 
 
@@ -93,8 +94,14 @@ struct Bullet {
 struct LightImage {
     int x, y;
 };
+
+struct Explosion {
+    int x, y;
+    Uint32 startTime;
+};
 extern std::vector<LightImage> lightImages;
 extern std::vector<FallingImage> fallingImages;
 extern std::vector<Bullet> bullets;
+extern std::vector<Explosion> explosions;
 
 #endif // GLOBALS_H
