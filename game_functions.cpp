@@ -26,15 +26,9 @@ void handleEvent(SDL_Event& e)
             isMovingLeft = false;
             isMovingRight = true;
             break;
-        //case SDLK_UP:
-        //    spriteY -= SPRITE_SPEEDU;
-        //    break;
-       // case SDLK_DOWN: 
-        //    spriteY += SPRITE_SPEEDU;
-        //    break;
         case SDLK_f:
             Bullet bullet;
-            bullet.x = spriteX + (gSprite->w - BULLET_WIDTH - 35);
+            bullet.x = spriteX + (gSprite->w - BULLET_WIDTH - 25);
             bullet.y = spriteY;
             bullets.push_back(bullet);
             Mix_PlayChannel(-1, soundBullet, 0);
@@ -200,7 +194,6 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
     SDL_Rect spriteRect = { spriteX, spriteY, 0, 0 };
     SDL_Rect* currentClip = &gSpriteClips[currentFrame / 3];
     SDL_BlitSurface(gSprite, currentClip, gScreenSurface, &spriteRect);
-    //SDL_BlitSurface(gSprite, NULL, gScreenSurface, &spriteRect);
     renderBloodBar(Blood, 500, spriteX + 50, spriteY - 10, gSprite->w, 5);
     for (auto& explosion : explosions) 
     {
@@ -208,7 +201,6 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
         {                             
             SDL_Rect explosionRect = { explosion.x, explosion.y, 0, 0 };                  
             SDL_BlitSurface(gExplosionImage, NULL, gScreenSurface, &explosionRect);
-           // Mix_PlayChannel(-1, soundExplosionSmall, 0);
         }    
     }
     renderText("Time: " + std::to_string(Time), 10, 10);

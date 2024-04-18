@@ -21,7 +21,7 @@ bool isBossVisible = false;
 
 void LoadBoss()
 {
-    if (Points >= 10 && Points <= 40 && bossBlood > 0) 
+    if (Points >= 50 && Points <= 70 && bossBlood > 0) 
     { 
         //Mix_PlayChannel(-1, soundWarning, 0);
         Level = 2;
@@ -32,7 +32,7 @@ void LoadBoss()
         SDL_BlitSurface(gBossImage, NULL, gScreenSurface, &bossRect);
         createLightImage(bossX, bossY);
     }
-    else if(Points >= 60 && Points <= 80 && boss2Blood > 0)
+    else if(Points >= 200 && Points <= 250 && boss2Blood > 0)
     {
         //Mix_PlayChannel(-1, soundWarning, 0);
         Level = 3;
@@ -41,7 +41,7 @@ void LoadBoss()
         SDL_BlitSurface(gBoss2Image, NULL, gScreenSurface, &boss2Rect);
         createLightImage(boss2X, boss2Y);
     }
-    else if(Points >=100 && Points <= 150 && boss3Blood > 0)
+    else if(Points >=1000 && Points <= 1100 && boss3Blood > 0)
     {
         //Mix_PlayChannel(-1, soundWarning, 0);
         Level = 4;

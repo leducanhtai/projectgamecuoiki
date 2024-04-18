@@ -16,17 +16,69 @@ void gameLoop()
     }
     while (true) 
     {
+       
         while (SDL_PollEvent(&e) != 0) 
         {
             handleEvent(e);
         }
-        if (gameOver) 
+        if(Points == 1000) win=true;
+        if(win) 
+        {
+            
+            SDL_Rect winRect = { (SCREEN_WIDTH - gwinImage->w) / 2, 
+                                  (SCREEN_HEIGHT - gwinImage->h) / 2, 0, 0 };
+            SDL_BlitSurface(gwinImage, NULL, gScreenSurface, &winRect);
+            SDL_UpdateWindowSurface(gWindow);
+            
+            while (SDL_PollEvent(&e) != 0) 
+            {
+                if (e.type == SDL_QUIT) 
+                {
+                    return; 
+                }
+                else if (e.type == SDL_MOUSEBUTTONDOWN) 
+                {
+                    int mouseX, mouseY;
+                    SDL_GetMouseState(&mouseX, &mouseY);
+                    if (mouseX >= 70 && mouseX <= 270 &&
+                        mouseY >= 620 && mouseY <= 670) 
+                    {
+                        gameOver = false;
+                        win = false;
+                        Time = 0;
+                        Points = 0;
+                        Blood = 500;
+                        Level =1;
+                        bullets.clear();
+                        fallingImages.clear();
+                        lightImages.clear();
+                        spawnHP=false;
+                        spawnShield = false;
+                        for (int i = 0; i < NUM_FALLING_IMAGES; i++) 
+                        {
+                            FallingImage fallingImage;
+                            fallingImage.x = rand() % SCREEN_WIDTH;
+                            fallingImage.y = rand() % (SCREEN_HEIGHT / 10);
+                            fallingImage.imagePath = getRandomFallingImage();
+                            fallingImages.push_back(fallingImage);
+                        }
+                    }
+                    else if(mouseX >= 450 && mouseX <= 550 &&
+                            mouseY >= 620 && mouseY <= 670)
+                    {
+                         SDL_Quit();
+                    }
+                }
+            }
+        }
+        else if(gameOver) 
         {
             
             SDL_Rect gameOverRect = { (SCREEN_WIDTH - gGameOverImage->w) / 2, 
                                   (SCREEN_HEIGHT - gGameOverImage->h) / 2, 0, 0 };
             SDL_BlitSurface(gGameOverImage, NULL, gScreenSurface, &gameOverRect);
             SDL_UpdateWindowSurface(gWindow);
+            
             while (SDL_PollEvent(&e) != 0) 
             {
                 if (e.type == SDL_QUIT) 
@@ -126,7 +178,7 @@ void gameLoop()
                             break;
                         }
                     }
-                    if (Points >= 10 && Points <= 40 ){
+                    if (Points >= 50 && Points <= 70 ){
                         if(isBossVisible && checkCollision(bulletIter->x, bulletIter->y, BULLET_WIDTH, 
                                        BULLET_HEIGHT, bossX, bossY, gBossImage->w, gBossImage->h))
                         {
@@ -136,7 +188,7 @@ void gameLoop()
                     
                         }
                     }
-                    if (Points >= 60 && Points <= 80 ){
+                    if (Points >= 200 && Points <= 250 ){
                         if(isBossVisible && checkCollision(bulletIter->x, bulletIter->y, BULLET_WIDTH, 
                                        BULLET_HEIGHT, boss2X, boss2Y, gBoss2Image->w, gBoss2Image->h))
                         {
@@ -146,7 +198,7 @@ void gameLoop()
                     
                         }
                     }
-                    if (Points >= 100 && Points <= 150 ){
+                    if (Points >= 1000 && Points <= 1100 ){
                         if(isBossVisible && checkCollision(bulletIter->x, bulletIter->y, BULLET_WIDTH, 
                                        BULLET_HEIGHT, boss3X, boss3Y, gBoss3Image->w, gBoss3Image->h))
                         {
@@ -215,11 +267,12 @@ void gameLoop()
                  }
             }
             
-            if (Points >= 10 && Points <= 40 ) moveEntity(bossX, bossDirection, gBossImage->w, SCREEN_WIDTH);
-            if (Points >= 60 && Points <= 80 ) moveEntity(boss2X, boss2Direction, gBoss2Image->w, SCREEN_WIDTH);
-            if (Points >= 100 && Points <= 150 ) moveEntity(boss3X, boss3Direction, gBoss3Image->w, SCREEN_WIDTH);
+            if (Points >= 50 && Points <= 70 ) moveEntity(bossX, bossDirection, gBossImage->w, SCREEN_WIDTH);
+            if (Points >= 200 && Points <= 250 ) moveEntity(boss2X, boss2Direction, gBoss2Image->w, SCREEN_WIDTH);
+            if (Points >= 1000 && Points <= 1100 ) moveEntity(boss3X, boss3Direction, gBoss3Image->w, SCREEN_WIDTH);
             renderGame(gScreenSurface, gBackground, gGameOverImage, gSprite, gBulletImage, fallingImages,
                 bullets, spriteX, spriteY, isMovingLeft, isMovingRight, isSpriteFacingRight, gameOver);
         }
     }
+
 } 

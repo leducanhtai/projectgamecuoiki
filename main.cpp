@@ -15,16 +15,35 @@
 
 const int SCREEN_WIDTH = 600;
 const int SCREEN_HEIGHT = 1067;
+
 const int SPRITE_SPEED = 6;
+int spriteX = SCREEN_WIDTH / 2;
+int spriteY = SCREEN_HEIGHT - 100;
+
+
 const int BULLET_SPEED = 2;
+const int BULLET_WIDTH = 30;
+const int BULLET_HEIGHT = 30;
+
+
 const int FALLING_SPEED = 1;
 const int NUM_FALLING_IMAGES = 4;
-const int BULLET_WIDTH = 10;
-const int BULLET_HEIGHT = 10;
+
+
 const int HP_WIDTH = 30;
 const int HP_HEIGHT = 30;
+int hpX = rand() % SCREEN_WIDTH;
+int hpY = 0;
+
+
 const int SHIELD_WIDTH = 30;
 const int SHIELD_HEIGHT = 30;
+int shieldX = rand() % SCREEN_WIDTH;
+int shieldY = 0;
+bool isGuideVisible = true;
+bool spawnShield = false;
+bool immortal = false;
+bool isProtectVisible = false;
 
 const int WALKING_ANIMATION_FRAMES = 3;
 SDL_Rect gSpriteClips[ WALKING_ANIMATION_FRAMES ];
@@ -46,24 +65,23 @@ SDL_Surface* gGuide = NULL;
 SDL_Surface* gShield = NULL;
 SDL_Surface* gProtect = NULL;
 SDL_Surface* gExplosionImage = NULL;
+SDL_Surface* gwinImage = NULL;
 
 TTF_Font* gFont = nullptr;
 Mix_Chunk* soundBullet = nullptr;
 Mix_Chunk* soundExplosionSmall = nullptr;
-Mix_Chunk* soundWarning = nullptr;
+//Mix_Chunk* soundWarning = nullptr;
 //Mix_Music* soundBackground = nullptr;
 
-int hpX = rand() % SCREEN_WIDTH;
-int hpY = 0;
-int shieldX = rand() % SCREEN_WIDTH;
-int shieldY = 0;
-int spriteX = SCREEN_WIDTH / 2;
-int spriteY = SCREEN_HEIGHT - 100;
+
+
 bool isMovingLeft = false;
 bool isMovingRight = false;
 bool isSpriteFacingRight = true;
 bool isMouseClicked = false;
 bool gameOver = false;
+bool win = false;
+
 int Time = 0;
 int Points = 0;
 int Blood=500;
@@ -73,10 +91,7 @@ int Level = 1;
 int backgroundY = 0;
 int currentFrame = 0;
 bool spawnHP = false;
-bool isGuideVisible = true;
-bool spawnShield = false;
-bool immortal = false;
-bool isProtectVisible = false;
+
 Uint32 protectStartTime = 0;
 
 std::vector<FallingImage> fallingImages;
@@ -227,17 +242,12 @@ bool loadMedia() {
         printf("Failed to load bullet sound effect! SDL_mixer Error: %s\n", Mix_GetError());
         success = false;
     }
-    soundWarning = Mix_LoadWAV("sound/soundWarning.wav");
-    if (soundWarning == nullptr) {
-        printf("Failed to load bullet sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+    gwinImage = SDL_LoadBMP("img/win.bmp");
+    if (gwinImage == NULL) {
+        printf("Unable to load win image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
-    //soundBackground = Mix_LoadMUS("sound/soundBackground.wav");
-   // if (soundBackground == nullptr) {
-    //    printf("Failed to load background sound! SDL_mixer Error: %s\n", Mix_GetError());
-    //    success = false;
-    //}
-    //Mix_PlayMusic(soundBackground, -1);
+    
     return success;
 }
 
@@ -272,10 +282,9 @@ void close() {
     soundBullet = nullptr;
     Mix_FreeChunk(soundExplosionSmall);
     soundExplosionSmall = nullptr;
-    Mix_FreeChunk(soundWarning);
-    soundWarning = nullptr;
-   // Mix_FreeMusic(soundBackground);
-    //soundBackground = nullptr;
+    SDL_FreeSurface(gwinImage);
+    gwinImage = NULL;
+
     SDL_Quit();
 }
 void LoadMenu(bool startGame)
@@ -301,16 +310,9 @@ void LoadMenu(bool startGame)
                 else if((mouseX >= 200 && mouseX <= 410 && 
                         mouseY >= 650 && mouseY <= 750)&&isGuideVisible)
                 {
-                    SDL_Rect guideRect = {50, 600, SCREEN_WIDTH, SCREEN_HEIGHT };
-                    SDL_BlitSurface(gGuide, NULL, gScreenSurface, &guideRect);
-                    SDL_UpdateWindowSurface(gWindow);
-                    isGuideVisible=false;
+                     SDL_Quit();
+                   
                 }
-                //else if(mouseX >= 460 && mouseX <= 530 && 
-                //        mouseY >= 610 && mouseY <= 660)
-                //{
-                //    isGuideVisible=false;
-                //}
             }
         }
     }

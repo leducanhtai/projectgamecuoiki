@@ -32,6 +32,7 @@ extern bool spawnHP;
 extern bool spawnShield;
 extern bool immortal;
 extern bool isProtectVisible;
+extern bool win;
 extern Uint32 protectStartTime;
 
 extern SDL_Window* gWindow;
@@ -50,12 +51,14 @@ extern SDL_Surface* gHPImage;
 extern SDL_Surface* gShield;
 extern SDL_Surface* gProtect;
 extern SDL_Surface* gExplosionImage;
+extern SDL_Surface* gwinImage;
+//extern SDL_Surface* gwinImage;
 
 extern TTF_Font* gFont; 
 extern Mix_Chunk* soundBullet;
 extern Mix_Chunk* soundExplosionSmall;
 //extern Mix_Music* soundBackground;
-extern Mix_Chunk* soundWarning;
+//extern Mix_Chunk* soundWarning;
 
 extern int hpX;
 extern int hpY;
