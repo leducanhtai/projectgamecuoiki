@@ -21,6 +21,8 @@ extern const int SHIELD_HEIGHT;
 
 extern SDL_Rect gSpriteClips[];//[ WALKING_ANIMATION_FRAMES ];
 extern SDL_Rect gBossClips[];//[ WALKING_ANIMATION_FRAMES ];
+extern SDL_Rect gBoss2Clips[];
+extern SDL_Rect gBoss3Clips[];
 
 extern bool isMovingLeft;
 extern bool isMovingRight;
@@ -39,7 +41,7 @@ extern SDL_Window* gWindow;
 extern SDL_Surface* gScreenSurface;
 extern SDL_Surface* gBackground;
 extern SDL_Surface* gSprite;
-//extern SDL_Surface* gFallingImage;
+extern SDL_Surface* gFallingImage;
 extern SDL_Surface* gBulletImage;
 extern SDL_Surface* gContinueImage;
 extern SDL_Surface* gGameOverImage;
@@ -52,13 +54,14 @@ extern SDL_Surface* gShield;
 extern SDL_Surface* gProtect;
 extern SDL_Surface* gExplosionImage;
 extern SDL_Surface* gwinImage;
-//extern SDL_Surface* gwinImage;
+
 
 extern TTF_Font* gFont; 
 extern Mix_Chunk* soundBullet;
 extern Mix_Chunk* soundExplosionSmall;
-//extern Mix_Music* soundBackground;
-//extern Mix_Chunk* soundWarning;
+extern Mix_Chunk* soundBackground;
+extern Mix_Music* backgroundMusic;
+
 
 extern int hpX;
 extern int hpY;

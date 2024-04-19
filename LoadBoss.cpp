@@ -23,31 +23,34 @@ void LoadBoss()
 {
     if (Points >= 50 && Points <= 70 && bossBlood > 0) 
     { 
-        //Mix_PlayChannel(-1, soundWarning, 0);
+       
         Level = 2;
         isBossVisible = true;
         SDL_Rect bossRect = { bossX, bossY, 0, 0 };
-        //SDL_Rect* currentClip = &gBossClips[currentFrame / 3];
-        //SDL_BlitSurface(gBossImage, currentClip, gScreenSurface, &bossRect);
-        SDL_BlitSurface(gBossImage, NULL, gScreenSurface, &bossRect);
+        SDL_Rect* currentClip = &gBossClips[currentFrame / 3];
+        SDL_BlitSurface(gBossImage, currentClip, gScreenSurface, &bossRect);
         createLightImage(bossX, bossY);
     }
     else if(Points >= 200 && Points <= 250 && boss2Blood > 0)
     {
-        //Mix_PlayChannel(-1, soundWarning, 0);
+     
         Level = 3;
         isBossVisible = true;
         SDL_Rect boss2Rect = { boss2X, boss2Y, 0, 0 };
-        SDL_BlitSurface(gBoss2Image, NULL, gScreenSurface, &boss2Rect);
+        SDL_Rect* currentClip = &gBoss2Clips[currentFrame / 3];
+        SDL_BlitSurface(gBoss2Image, currentClip, gScreenSurface, &boss2Rect);
+        //SDL_Rect boss2Rect = { boss2X, boss2Y, 0, 0 };
+        //SDL_BlitSurface(gBoss2Image, NULL, gScreenSurface, &boss2Rect);
         createLightImage(boss2X, boss2Y);
     }
     else if(Points >=1000 && Points <= 1100 && boss3Blood > 0)
     {
-        //Mix_PlayChannel(-1, soundWarning, 0);
+
         Level = 4;
         isBossVisible = true;
         SDL_Rect boss3Rect = { boss3X, boss3Y, 0, 0 };
-        SDL_BlitSurface(gBoss3Image, NULL, gScreenSurface, &boss3Rect);\
+        SDL_Rect* currentClip = &gBoss3Clips[currentFrame / 3];
+        SDL_BlitSurface(gBoss3Image, currentClip, gScreenSurface, &boss3Rect);
         createLightImage(boss3X, boss3Y);
     }
     else

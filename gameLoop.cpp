@@ -3,12 +3,12 @@
 
 void gameLoop() 
 {
+     Mix_PlayMusic(backgroundMusic, -1);
     SDL_Event e;
     Uint32 lastUpdate = SDL_GetTicks();
     Uint32 lastSecond = SDL_GetTicks();
     int frames = 0;
-    const Uint32 FRAME_DELAY = 1000 / 60;
-        
+    const Uint32 FRAME_DELAY = 1000 / 60;   
     while (SDL_PollEvent(&e) != 0) {
         if (e.type == SDL_QUIT) {
             return;
@@ -16,12 +16,13 @@ void gameLoop()
     }
     while (true) 
     {
+        
        
         while (SDL_PollEvent(&e) != 0) 
         {
             handleEvent(e);
         }
-        if(Points == 1000) win=true;
+        if(Points == 1100) win=true;
         if(win) 
         {
             
@@ -116,6 +117,7 @@ void gameLoop()
         }
         else 
         {
+            
             Uint32 currentTime = SDL_GetTicks();
             Uint32 deltaTime = currentTime - lastUpdate;
             Uint32 deltaSecond = currentTime - lastSecond;
@@ -125,6 +127,7 @@ void gameLoop()
                 backgroundY = 0;
             }
             if (deltaTime >= FRAME_DELAY) {
+
                 if (isMovingLeft && spriteX > 0) 
                 {
                     spriteX -= SPRITE_SPEED;
@@ -180,7 +183,7 @@ void gameLoop()
                     }
                     if (Points >= 50 && Points <= 70 ){
                         if(isBossVisible && checkCollision(bulletIter->x, bulletIter->y, BULLET_WIDTH, 
-                                       BULLET_HEIGHT, bossX, bossY, gBossImage->w, gBossImage->h))
+                                       BULLET_HEIGHT, bossX, bossY, gBossImage->w, gBossImage->h-700))
                         {
                             bulletIter = bullets.erase(bulletIter);
                             bulletRemoved = true;
@@ -190,7 +193,7 @@ void gameLoop()
                     }
                     if (Points >= 200 && Points <= 250 ){
                         if(isBossVisible && checkCollision(bulletIter->x, bulletIter->y, BULLET_WIDTH, 
-                                       BULLET_HEIGHT, boss2X, boss2Y, gBoss2Image->w, gBoss2Image->h))
+                                       BULLET_HEIGHT, boss2X, boss2Y, gBoss2Image->w, gBoss2Image->h-1300))
                         {
                             bulletIter = bullets.erase(bulletIter);
                             bulletRemoved = true;
@@ -200,7 +203,7 @@ void gameLoop()
                     }
                     if (Points >= 1000 && Points <= 1100 ){
                         if(isBossVisible && checkCollision(bulletIter->x, bulletIter->y, BULLET_WIDTH, 
-                                       BULLET_HEIGHT, boss3X, boss3Y, gBoss3Image->w, gBoss3Image->h))
+                                       BULLET_HEIGHT, boss3X, boss3Y, gBoss3Image->w, gBoss3Image->h-800))
                         {
                             bulletIter = bullets.erase(bulletIter);
                             bulletRemoved = true;

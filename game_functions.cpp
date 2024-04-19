@@ -75,8 +75,8 @@ void renderText(const std::string& text, int x, int y)
 void createLightImage(int bossX, int bossY) 
 {
         LightImage lightImage;
-        lightImage.x = bossX + (gBossImage->w - gLightImage->w) / 2; 
-        lightImage.y = bossY + gBossImage->h - 100;
+        lightImage.x = bossX + (gBossImage->w  - gLightImage->w) / 2; 
+        lightImage.y = bossY + gBossImage->h - 750;
         lightImages.push_back(lightImage);
     
 }

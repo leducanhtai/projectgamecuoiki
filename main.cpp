@@ -47,7 +47,11 @@ bool isProtectVisible = false;
 
 const int WALKING_ANIMATION_FRAMES = 3;
 SDL_Rect gSpriteClips[ WALKING_ANIMATION_FRAMES ];
-//SDL_Rect gBossClips[ WALKING_ANIMATION_FRAMES ];
+SDL_Rect gBossClips[ WALKING_ANIMATION_FRAMES ];
+SDL_Rect gBoss2Clips[ WALKING_ANIMATION_FRAMES ];
+SDL_Rect gBoss3Clips[ WALKING_ANIMATION_FRAMES ];
+
+
 
 SDL_Window* gWindow = NULL;
 SDL_Surface* gScreenSurface = NULL;
@@ -70,8 +74,9 @@ SDL_Surface* gwinImage = NULL;
 TTF_Font* gFont = nullptr;
 Mix_Chunk* soundBullet = nullptr;
 Mix_Chunk* soundExplosionSmall = nullptr;
-//Mix_Chunk* soundWarning = nullptr;
-//Mix_Music* soundBackground = nullptr;
+Mix_Music* backgroundMusic = nullptr;
+
+
 
 
 
@@ -136,8 +141,9 @@ bool init() {
     }
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
         printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-        return false;
+        success = false;
     }
+    
     
 
     return success;
@@ -182,20 +188,69 @@ bool loadMedia() {
         printf("Unable to load game over image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
-    gBossImage = SDL_LoadBMP("img/boss.bmp");
+    gBossImage = SDL_LoadBMP("img/bossk.bmp");
     if (gBossImage == NULL) {
         printf("Unable to load boss image! SDL Error: %s\n", SDL_GetError());
         success = false;
+    }
+    else{
+       gBossClips[ 0 ].x =   0;
+		gBossClips[ 0 ].y =   0;
+		gBossClips[ 0 ].w = 245;
+		gBossClips[ 0 ].h = 336;
+
+		gBossClips[ 1 ].x =  0;
+		gBossClips[ 1 ].y = 336;
+		gBossClips[ 1 ].w = 245;
+		gBossClips[ 1 ].h = 336;
+		
+	    gBossClips[ 2 ].x = 0;
+		gBossClips[ 2 ].y = 672;
+		gBossClips[ 2 ].w = 245;
+		gBossClips[ 2 ].h = 336;
+
     }
     gBoss2Image = SDL_LoadBMP("img/boss2.bmp");
     if (gBoss2Image == NULL) {
         printf("Unable to load boss2 image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
+    else{
+        gBoss2Clips[ 0 ].x =   0;
+		gBoss2Clips[ 0 ].y =   0;
+		gBoss2Clips[ 0 ].w = 392;
+		gBoss2Clips[ 0 ].h = 525;
+
+		gBoss2Clips[ 1 ].x =  0;
+		gBoss2Clips[ 1 ].y = 525;
+		gBoss2Clips[ 1 ].w = 392;
+		gBoss2Clips[ 1 ].h = 525;
+		
+	    gBoss2Clips[ 2 ].x = 0;	
+    	gBoss2Clips[ 2 ].y = 1050;
+		gBoss2Clips[ 2 ].w = 392;
+		gBoss2Clips[ 2 ].h = 525;
+    }
     gBoss3Image = SDL_LoadBMP("img/boss3.bmp");
     if (gBoss3Image == NULL) {
         printf("Unable to load boss3 image! SDL Error: %s\n", SDL_GetError());
         success = false;
+    }
+    else{
+        gBoss3Clips[ 0 ].x =   0;
+		gBoss3Clips[ 0 ].y =   0;
+		gBoss3Clips[ 0 ].w = 450;
+		gBoss3Clips[ 0 ].h = 474;
+
+		gBoss3Clips[ 1 ].x =  0;
+		gBoss3Clips[ 1 ].y = 474;
+		gBoss3Clips[ 1 ].w = 450;
+		gBoss3Clips[ 1 ].h = 474;
+		
+	    gBoss3Clips[ 2 ].x = 0;	
+    	gBoss3Clips[ 2 ].y = 948;
+		gBoss3Clips[ 2 ].w = 450;
+		gBoss3Clips[ 2 ].h = 474;
     }
     gLightImage = SDL_LoadBMP("img/light.bmp");
     if (gLightImage == NULL) {
@@ -241,13 +296,18 @@ bool loadMedia() {
     if (soundExplosionSmall == nullptr) {
         printf("Failed to load bullet sound effect! SDL_mixer Error: %s\n", Mix_GetError());
         success = false;
-    }
+    } 
+    backgroundMusic = Mix_LoadMUS("sound/soundBackground.wav");
+    if (backgroundMusic == nullptr) {
+        printf("Failed to load background music! SDL_mixer Error: %s\n", Mix_GetError());
+        success = false;
+    }  
     gwinImage = SDL_LoadBMP("img/win.bmp");
     if (gwinImage == NULL) {
         printf("Unable to load win image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
-    
+
     return success;
 }
 
@@ -283,6 +343,9 @@ void close() {
     Mix_FreeChunk(soundExplosionSmall);
     soundExplosionSmall = nullptr;
     SDL_FreeSurface(gwinImage);
+    gwinImage = NULL;
+    Mix_FreeMusic(backgroundMusic);
+    backgroundMusic = nullptr;
     gwinImage = NULL;
 
     SDL_Quit();
