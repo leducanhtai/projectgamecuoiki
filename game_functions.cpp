@@ -17,6 +17,8 @@ void renderText(const std::string& text, int x, int y)
         SDL_FreeSurface(textSurface);
     }
 }
+
+
 void createLightImage(int bossX, int bossY) 
 {
         LightImage lightImage;
@@ -25,6 +27,8 @@ void createLightImage(int bossX, int bossY)
         lightImages.push_back(lightImage);
     
 }
+
+
 void renderBloodBar(int currentBlood, int maxBlood, int x, int y, int width, int height) {
     
     int bloodBarWidth = (currentBlood * width) / maxBlood;
@@ -34,6 +38,13 @@ void renderBloodBar(int currentBlood, int maxBlood, int x, int y, int width, int
     SDL_FillRect(gScreenSurface, &remainingBloodhRect, SDL_MapRGB(gScreenSurface->format, 0, 255, 0));
 }
 
+void renderExplosion( int bossX, int bossY){
+
+        SDL_Rect bigExplosionRect = { bossX, bossY, 0, 0 };
+        SDL_Rect* currentClip = &gExplosionClips[currentFrame / 7];
+        SDL_BlitSurface(gBigExplosionImage, currentClip, gScreenSurface, &bigExplosionRect);
+
+}
 void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surface* gGameOverImage, SDL_Surface* gSprite, 
                 SDL_Surface* gBulletImage,std::vector<FallingImage>& fallingImages, std::vector<Bullet>& bullets, int& spriteX, 
                 int& spriteY, bool& isMovingLeft, bool& isMovingRight, bool& isSpriteFacingRight, bool& gameOver) 
@@ -54,6 +65,15 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
     if (spawnShield) {
         SDL_Rect shieldRect = { shieldX, shieldY, SHIELD_WIDTH, SHIELD_HEIGHT };
         SDL_BlitSurface(gShield, NULL, gScreenSurface, &shieldRect);
+    }
+    if(spawnfire&& Points >= 500&&Points <= 600)
+    {
+       SDL_Rect fireBossRect = { fireBossX, fireBossY, FIRE_WIDTH, FIRE_HEIGHT };
+       //SDL_BlitSurface(gfireBossImage, NULL, gScreenSurface, );
+        //SDL_Rect fireBossRect = { spriteX, spriteY, 0, 0 };
+        SDL_Rect* currentClip = &gfireBossClips[currentFrame / 3];
+        SDL_BlitSurface(gfireBossImage, currentClip, gScreenSurface, &fireBossRect);
+
     }
     if (immortal) {
         if (!isProtectVisible) {
@@ -140,24 +160,10 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
     SDL_Rect* currentClip = &gSpriteClips[currentFrame / 3];
     SDL_BlitSurface(gSprite, currentClip, gScreenSurface, &spriteRect);
 
-    if(Points <= 70 && Points >=60)
-    {
-        SDL_Rect bigExplosionRect = { bossX, bossY, 0, 0 };
-        SDL_Rect* currentClip = &gExplosionClips[currentFrame / 7];
-        SDL_BlitSurface(gBigExplosionImage, currentClip, gScreenSurface, &bigExplosionRect);
-    }
-    if(Points <= 250 && Points >=230)
-    {
-        SDL_Rect bigExplosionRect = { boss2X, boss2Y, 0, 0 };
-        SDL_Rect* currentClip = &gExplosionClips[currentFrame / 7];
-        SDL_BlitSurface(gBigExplosionImage, currentClip, gScreenSurface, &bigExplosionRect);
-    }
-    if(Points <= 600 && Points >= 580)
-    {
-        SDL_Rect bigExplosionRect = { boss3X, boss3Y, 0, 0 };
-        SDL_Rect* currentClip = &gExplosionClips[currentFrame / 7];
-        SDL_BlitSurface(gBigExplosionImage, currentClip, gScreenSurface, &bigExplosionRect);
-    }
+    if(Points <= 70 && Points >=60) renderExplosion(bossX,bossY);
+    if(Points <= 250 && Points >=230) renderExplosion(boss2X,boss2Y);
+    if(Points <= 600 && Points >= 580) renderExplosion(boss3X,boss3Y);
+    
     renderBloodBar(Blood, 500, spriteX + 50, spriteY - 10, gSprite->w, 5);
     for (auto& explosion : explosions) 
     {

@@ -231,7 +231,7 @@ void gameLoop()
 
             if (spawnHP) 
             {
-                hpY += 1.2; 
+                hpY += 1; 
                 if (checkCollision(spriteX, spriteY, gSprite->w, gSprite->h, hpX, hpY, HP_WIDTH, HP_HEIGHT)) {
                    if(Blood <= 500)
                    {
@@ -269,7 +269,27 @@ void gameLoop()
                     spawnShield = true; 
                  }
             }
-            
+            if (spawnfire) 
+            {
+                fireBossY += 2;
+                if (checkCollision(spriteX, spriteY, gSprite->w, gSprite->h, fireBossX, fireBossY, FIRE_WIDTH , FIRE_HEIGHT)) 
+                {           
+                      //Blood--;    
+                      gameOver=true;  
+                         
+                }                
+                if (fireBossY > SCREEN_HEIGHT){
+                    fireBossX = bossX + 300;
+                    fireBossY = bossY + 100;
+                    spawnfire = false; 
+                }
+            } else {
+                if (Time % 1 == 0 && Points >= 500 && Points <= 600 ) { 
+                    fireBossX = bossY + 300;
+                    fireBossY = bossX + 100;
+                    spawnfire = true; 
+                 }
+            }
             if (Points >= 50 && Points <= 70 ) moveEntity(bossX, bossDirection, gBossImage->w, SCREEN_WIDTH);
             if (Points >= 200 && Points <= 250 ) moveEntity(boss2X, boss2Direction, gBoss2Image->w, SCREEN_WIDTH);
             if (Points >= 500 && Points <= 600 ) moveEntity(boss3X, boss3Direction, gBoss3Image->w, SCREEN_WIDTH);

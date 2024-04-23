@@ -41,16 +41,26 @@ const int SHIELD_WIDTH = 30;
 const int SHIELD_HEIGHT = 30;
 int shieldX = rand() % SCREEN_WIDTH;
 int shieldY = 0;
+
 bool isGuideVisible = true;
 bool spawnShield = false;
 bool immortal = false;
 bool isProtectVisible = false;
+
+bool spawnfire = false;
+int fireBossX = SCREEN_WIDTH / 2 + 300;
+int fireBossY = SCREEN_HEIGHT / 2 + 300;
+const int FIRE_WIDTH = 30;
+const int FIRE_HEIGHT = 30;
+
+
 
 const int WALKING_ANIMATION_FRAMES = 3;
 SDL_Rect gSpriteClips[ WALKING_ANIMATION_FRAMES ];
 SDL_Rect gBossClips[ WALKING_ANIMATION_FRAMES ];
 SDL_Rect gBoss2Clips[ WALKING_ANIMATION_FRAMES ];
 SDL_Rect gBoss3Clips[ WALKING_ANIMATION_FRAMES ];
+SDL_Rect gfireBossClips[ WALKING_ANIMATION_FRAMES ];
 SDL_Rect gExplosionClips[ 7 ];
 
 
@@ -74,6 +84,7 @@ SDL_Surface* gProtect = NULL;
 SDL_Surface* gExplosionImage = NULL;
 SDL_Surface* gwinImage = NULL;
 SDL_Surface* gBigExplosionImage = NULL;
+SDL_Surface* gfireBossImage = NULL;
 
 TTF_Font* gFont = nullptr;
 Mix_Chunk* soundBullet = nullptr;
@@ -251,6 +262,27 @@ bool loadMedia() {
 		gBoss3Clips[ 2 ].w = 450;
 		gBoss3Clips[ 2 ].h = 474;
     }
+    gfireBossImage = SDL_LoadBMP("img/fire.bmp");
+    if (gfireBossImage == NULL) {
+        printf("Unable to load fire image! SDL Error: %s\n", SDL_GetError());
+        success = false;
+    }
+    else{
+        gfireBossClips[ 0 ].x =   0;
+		gfireBossClips[ 0 ].y =   0;
+		gfireBossClips[ 0 ].w = 50;
+		gfireBossClips[ 0 ].h = 93;
+
+		gfireBossClips[ 1 ].x =  0;
+		gfireBossClips[ 1 ].y = 93;
+		gfireBossClips[ 1 ].w = 50;
+		gfireBossClips[ 1 ].h = 93;
+		
+	    gfireBossClips[ 2 ].x = 0;	
+    	gfireBossClips[ 2 ].y = 186;
+		gfireBossClips[ 2 ].w = 50;
+		gfireBossClips[ 2 ].h = 93;
+    }
     gLightImage = SDL_LoadBMP("img/light.bmp");
     if (gLightImage == NULL) {
         printf("Unable to load light image! SDL Error: %s\n", SDL_GetError());
@@ -391,6 +423,8 @@ void close() {
     gwinImage = NULL;
     SDL_FreeSurface(gBigExplosionImage);
     gBigExplosionImage = NULL;
+    SDL_FreeSurface(gfireBossImage);
+    gfireBossImage = NULL;
     SDL_Quit();
 }
 void LoadMenu(bool startGame)

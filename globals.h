@@ -24,6 +24,7 @@ extern SDL_Rect gBossClips[];//[ WALKING_ANIMATION_FRAMES ];
 extern SDL_Rect gBoss2Clips[];
 extern SDL_Rect gBoss3Clips[];
 extern SDL_Rect gExplosionClips[];
+extern SDL_Rect gfireBossClips[];
 
 extern bool isMovingLeft;
 extern bool isMovingRight;
@@ -33,6 +34,7 @@ extern bool isBossVisible;
 extern bool isMouseClicked;
 extern bool spawnHP;
 extern bool spawnShield;
+extern bool spawnfire;
 extern bool immortal;
 extern bool isProtectVisible;
 extern bool win;
@@ -56,6 +58,7 @@ extern SDL_Surface* gProtect;
 extern SDL_Surface* gExplosionImage;
 extern SDL_Surface* gwinImage;
 extern SDL_Surface* gBigExplosionImage;
+extern SDL_Surface* gfireBossImage;
 
 
 extern TTF_Font* gFont; 
@@ -71,6 +74,10 @@ extern int shieldX;
 extern int shieldY;
 extern int spriteX;
 extern int spriteY;
+extern int fireBossX;
+extern int fireBossY;
+extern const int FIRE_WIDTH;
+extern const int FIRE_HEIGHT;
 extern int Time;
 extern int Points;
 extern int Level;
