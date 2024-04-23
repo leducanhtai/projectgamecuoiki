@@ -13,6 +13,7 @@
 #include "checkCollision.h"
 #include "randomFalling.h"
 #include "LoadBoss.h"
+#include "handleEvent.h"
 
 void gameLoop() ;
 

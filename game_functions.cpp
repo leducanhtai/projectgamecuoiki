@@ -1,61 +1,6 @@
 #include "game_functions.h"
-#include "globals.h"
-#include "checkCollision.h"
-#include "randomFalling.h"
-#include "gameLoop.h"
-#include <iostream>
-#include <string>
 
 
-void handleEvent(SDL_Event& e) 
-{
-    if (e.type == SDL_QUIT) 
-    {
-        SDL_Quit();
-        exit(0);
-    }
-    else if (e.type == SDL_KEYDOWN) 
-    {
-        switch (e.key.keysym.sym) 
-        {
-        case SDLK_LEFT:
-            isMovingLeft = true;
-            isMovingRight = false;
-            break;
-        case SDLK_RIGHT:
-            isMovingLeft = false;
-            isMovingRight = true;
-            break;
-        case SDLK_f:
-            Bullet bullet;
-            bullet.x = spriteX + (gSprite->w - BULLET_WIDTH - 25);
-            bullet.y = spriteY;
-            bullets.push_back(bullet);
-            Mix_PlayChannel(-1, soundBullet, 0);
-            break;
-        }
-    }
-    else if (e.type == SDL_KEYUP) 
-    {
-        switch (e.key.keysym.sym) 
-        {
-        case SDLK_LEFT:
-            isMovingLeft = false;
-            break;
-        case SDLK_RIGHT:
-            isMovingRight = false;
-            break;
-        
-        }
-    }
-    else if (e.type == SDL_MOUSEBUTTONDOWN) 
-    {
-        if (gameOver) 
-        {
-            isMouseClicked = true;
-        }
-    }
-}
 
 void renderText(const std::string& text, int x, int y) 
 {
@@ -194,6 +139,25 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
     SDL_Rect spriteRect = { spriteX, spriteY, 0, 0 };
     SDL_Rect* currentClip = &gSpriteClips[currentFrame / 3];
     SDL_BlitSurface(gSprite, currentClip, gScreenSurface, &spriteRect);
+
+    if(Points <= 70 && Points >=60)
+    {
+        SDL_Rect bigExplosionRect = { bossX, bossY, 0, 0 };
+        SDL_Rect* currentClip = &gExplosionClips[currentFrame / 7];
+        SDL_BlitSurface(gBigExplosionImage, currentClip, gScreenSurface, &bigExplosionRect);
+    }
+    if(Points <= 250 && Points >=230)
+    {
+        SDL_Rect bigExplosionRect = { boss2X, boss2Y, 0, 0 };
+        SDL_Rect* currentClip = &gExplosionClips[currentFrame / 7];
+        SDL_BlitSurface(gBigExplosionImage, currentClip, gScreenSurface, &bigExplosionRect);
+    }
+    if(Points <= 600 && Points >= 580)
+    {
+        SDL_Rect bigExplosionRect = { boss3X, boss3Y, 0, 0 };
+        SDL_Rect* currentClip = &gExplosionClips[currentFrame / 7];
+        SDL_BlitSurface(gBigExplosionImage, currentClip, gScreenSurface, &bigExplosionRect);
+    }
     renderBloodBar(Blood, 500, spriteX + 50, spriteY - 10, gSprite->w, 5);
     for (auto& explosion : explosions) 
     {

@@ -1,5 +1,5 @@
-#ifndef LOADBOSS_H
-#define LOADBOSS_H
+#ifndef HANDLEEVENT_H
+#define HANDLEEVENT_H
 
 #include <iostream>
 #include "src/include/SDL2/SDL.h"
@@ -9,12 +9,13 @@
 #include <cstdlib>
 #include <ctime>
 #include "globals.h"
-#include "game_functions.h"
 #include "checkCollision.h"
 #include "randomFalling.h"
-#include "handleEvent.h"
+#include "gameLoop.h"
+#include "LoadBoss.h"
+#include "game_functions.h"
 
-void LoadBoss();
-void moveEntity(int& entityX, int& entityDirection, int entityWidth, int screenWidth);
+void handleEvent(SDL_Event &e);
 
-#endif //LOADBOSS_H
+
+#endif // HANDLEEVENT_H

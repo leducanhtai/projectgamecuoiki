@@ -23,6 +23,7 @@ extern SDL_Rect gSpriteClips[];//[ WALKING_ANIMATION_FRAMES ];
 extern SDL_Rect gBossClips[];//[ WALKING_ANIMATION_FRAMES ];
 extern SDL_Rect gBoss2Clips[];
 extern SDL_Rect gBoss3Clips[];
+extern SDL_Rect gExplosionClips[];
 
 extern bool isMovingLeft;
 extern bool isMovingRight;
@@ -54,6 +55,7 @@ extern SDL_Surface* gShield;
 extern SDL_Surface* gProtect;
 extern SDL_Surface* gExplosionImage;
 extern SDL_Surface* gwinImage;
+extern SDL_Surface* gBigExplosionImage;
 
 
 extern TTF_Font* gFont; 

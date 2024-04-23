@@ -12,6 +12,7 @@
 #include "gameLoop.h"
 #include "globals.h"
 #include "LoadBoss.h"
+#include "handleEvent.h"
 
 const int SCREEN_WIDTH = 600;
 const int SCREEN_HEIGHT = 1067;
@@ -50,6 +51,8 @@ SDL_Rect gSpriteClips[ WALKING_ANIMATION_FRAMES ];
 SDL_Rect gBossClips[ WALKING_ANIMATION_FRAMES ];
 SDL_Rect gBoss2Clips[ WALKING_ANIMATION_FRAMES ];
 SDL_Rect gBoss3Clips[ WALKING_ANIMATION_FRAMES ];
+SDL_Rect gExplosionClips[ 7 ];
+
 
 
 
@@ -65,11 +68,12 @@ SDL_Surface* gBoss3Image = NULL;
 SDL_Surface* gLightImage = NULL;
 SDL_Surface* gHPImage = NULL;
 SDL_Surface* gMenu = NULL;
-SDL_Surface* gGuide = NULL;
+//SDL_Surface* gGuide = NULL;
 SDL_Surface* gShield = NULL;
 SDL_Surface* gProtect = NULL;
 SDL_Surface* gExplosionImage = NULL;
 SDL_Surface* gwinImage = NULL;
+SDL_Surface* gBigExplosionImage = NULL;
 
 TTF_Font* gFont = nullptr;
 Mix_Chunk* soundBullet = nullptr;
@@ -78,12 +82,7 @@ Mix_Music* backgroundMusic = nullptr;
 
 
 
-
-
-bool isMovingLeft = false;
-bool isMovingRight = false;
 bool isSpriteFacingRight = true;
-bool isMouseClicked = false;
 bool gameOver = false;
 bool win = false;
 
@@ -267,11 +266,11 @@ bool loadMedia() {
         printf("Unable to load menu image! SDL Error: %s\n", SDL_GetError());
         return false;
     }
-    gGuide = SDL_LoadBMP("img/hd.bmp");
-    if (gGuide == NULL) {
-        printf("Unable to load guide image! SDL Error: %s\n", SDL_GetError());
-        success = false;
-    }
+    //gGuide = SDL_LoadBMP("img/hd.bmp");
+    //if (gGuide == NULL) {
+    //    printf("Unable to load guide image! SDL Error: %s\n", SDL_GetError());
+    //    success = false;
+    //}
     gShield = SDL_LoadBMP("img/khien.bmp");
     if (gShield == NULL) {
         printf("Unable to load shield image! SDL Error: %s\n", SDL_GetError());
@@ -307,6 +306,49 @@ bool loadMedia() {
         printf("Unable to load win image! SDL Error: %s\n", SDL_GetError());
         success = false;
     }
+    gBigExplosionImage = SDL_LoadBMP("img/bigexplosion.bmp");
+    if (gBigExplosionImage == NULL) {
+        printf("Unable to load big explosion image! SDL Error: %s\n", SDL_GetError());
+        success = false;
+    }
+    else{
+        gExplosionClips[ 0 ].x =   0;
+		gExplosionClips[ 0 ].y =   0;
+		gExplosionClips[ 0 ].w = 180;
+		gExplosionClips[ 0 ].h = 180;
+
+        gExplosionClips[ 1 ].x = 180;
+		gExplosionClips[ 1 ].y =   0;
+		gExplosionClips[ 1 ].w = 180;
+		gExplosionClips[ 1 ].h = 180;
+
+        gExplosionClips[ 2 ].x = 360;
+		gExplosionClips[ 2 ].y =   0;
+		gExplosionClips[ 2 ].w = 180;
+		gExplosionClips[ 2 ].h = 180;
+
+        gExplosionClips[ 3 ].x = 540;
+		gExplosionClips[ 3 ].y =   0;
+		gExplosionClips[ 3 ].w = 180;
+		gExplosionClips[ 3 ].h = 180;
+
+        gExplosionClips[ 4 ].x = 720;
+		gExplosionClips[ 4 ].y =   0;
+		gExplosionClips[ 4 ].w = 180;
+		gExplosionClips[ 4 ].h = 180;
+
+        gExplosionClips[ 5 ].x = 0;
+		gExplosionClips[ 5 ].y = 180;
+		gExplosionClips[ 5 ].w = 180;
+		gExplosionClips[ 5 ].h = 180;
+
+        gExplosionClips[ 6 ].x = 180;
+		gExplosionClips[ 6 ].y = 360;
+		gExplosionClips[ 6 ].w = 180;
+		gExplosionClips[ 6 ].h = 180;
+
+		
+    }
 
     return success;
 }
@@ -330,8 +372,8 @@ void close() {
     gBoss3Image = NULL;
     SDL_FreeSurface(gMenu);
     gMenu = NULL;
-    SDL_FreeSurface(gGuide);
-    gGuide = NULL;
+    //SDL_FreeSurface(gGuide);
+    //gGuide = NULL;
     SDL_FreeSurface(gLightImage);
     gLightImage = NULL;
     SDL_FreeSurface(gShield);
@@ -347,7 +389,8 @@ void close() {
     Mix_FreeMusic(backgroundMusic);
     backgroundMusic = nullptr;
     gwinImage = NULL;
-
+    SDL_FreeSurface(gBigExplosionImage);
+    gBigExplosionImage = NULL;
     SDL_Quit();
 }
 void LoadMenu(bool startGame)

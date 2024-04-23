@@ -43,7 +43,7 @@ void LoadBoss()
         //SDL_BlitSurface(gBoss2Image, NULL, gScreenSurface, &boss2Rect);
         createLightImage(boss2X, boss2Y);
     }
-    else if(Points >=1000 && Points <= 1100 && boss3Blood > 0)
+    else if(Points >=500 && Points <= 600 && boss3Blood > 0)
     {
 
         Level = 4;

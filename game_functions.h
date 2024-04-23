@@ -13,8 +13,8 @@
 #include "randomFalling.h"
 #include "gameLoop.h"
 #include "LoadBoss.h"
+#include "handleEvent.h"
 
-void handleEvent(SDL_Event &e);
 void renderText(const std::string& text, int x, int y);
 void createLightImage(int bossX, int bossY);
 void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surface* gGameOverImage, SDL_Surface* gSprite, 

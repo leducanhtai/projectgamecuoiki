@@ -22,7 +22,7 @@ void gameLoop()
         {
             handleEvent(e);
         }
-        if(Points == 1100) win=true;
+        if(Points == 601) win=true;
         if(win) 
         {
             
@@ -201,9 +201,9 @@ void gameLoop()
                     
                         }
                     }
-                    if (Points >= 1000 && Points <= 1100 ){
+                    if (Points >= 500 && Points <= 600 ){
                         if(isBossVisible && checkCollision(bulletIter->x, bulletIter->y, BULLET_WIDTH, 
-                                       BULLET_HEIGHT, boss3X, boss3Y, gBoss3Image->w, gBoss3Image->h-800))
+                                       BULLET_HEIGHT, boss3X, boss3Y, gBoss3Image->w, gBoss3Image->h-1000))
                         {
                             bulletIter = bullets.erase(bulletIter);
                             bulletRemoved = true;
@@ -272,7 +272,7 @@ void gameLoop()
             
             if (Points >= 50 && Points <= 70 ) moveEntity(bossX, bossDirection, gBossImage->w, SCREEN_WIDTH);
             if (Points >= 200 && Points <= 250 ) moveEntity(boss2X, boss2Direction, gBoss2Image->w, SCREEN_WIDTH);
-            if (Points >= 1000 && Points <= 1100 ) moveEntity(boss3X, boss3Direction, gBoss3Image->w, SCREEN_WIDTH);
+            if (Points >= 500 && Points <= 600 ) moveEntity(boss3X, boss3Direction, gBoss3Image->w, SCREEN_WIDTH);
             renderGame(gScreenSurface, gBackground, gGameOverImage, gSprite, gBulletImage, fallingImages,
                 bullets, spriteX, spriteY, isMovingLeft, isMovingRight, isSpriteFacingRight, gameOver);
         }
