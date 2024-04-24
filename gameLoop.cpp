@@ -274,8 +274,8 @@ void gameLoop()
                 fireBossY += 2;
                 if (checkCollision(spriteX, spriteY, gSprite->w, gSprite->h, fireBossX, fireBossY, FIRE_WIDTH , FIRE_HEIGHT)) 
                 {           
-                      //Blood--;    
-                      gameOver=true;  
+                      Blood -= 10;    
+                      //gameOver=true;  
                          
                 }                
                 if (fireBossY > SCREEN_HEIGHT){

@@ -115,8 +115,8 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
         {
             if(!immortal)
             {
-               Blood --;
-               if(Blood == 0)
+               Blood -- ;
+               if(Blood <= 0)
                {
                   gameOver = true;
                   return;
