@@ -1,5 +1,5 @@
 # BÀI TẬP LỚN - PLANE AND BONBS - GAME - SDL2 #(INT2215 - 2324)
-## Video Demo: https://www.facebook.com/profile.php?id=100069385633621
+## Video Demo: https://www.youtube.com/watch?v=LWByIC2QWQs
 ## Mô tả về các đối tượng trong trò chơi 
 - ![](img/Sprite.png) **Sprite** là nhân vật chính của trò chơi. Sprite có thể di chuyển theo 2 hướng trái/phải điều khiển của người chơi.
 - ![](img/bom1.png)  ![](img/bom2.png)  ![](img/bom3.png)  ![](img/bom4.png) **FallingImage** là các đối tượng mà Sprite phải bắn nổ. FallingImage xuất hiện ngẫu nhiên mỗi lần xuất hiện. Bắn nổ FallingImage thì sẽ được cộng điểm.
@@ -24,9 +24,10 @@
   ![](img/win.png)
 - Để chơi tiếp hãy ấn vào **play again**
 ## Cách cài đặt project
+- Tải game (được nén thành .zip) tại link sau: https://github.com/leducanhtai/projectgamecuoiki/releases/tag/releases
 - Cách clone project về máy rất đơn giản, các bạn có thể down file .zip về sau đó giải nén, hoặc có thể tạo 1 folder mới rồi dùng git clone, hoặc đơn giản hơn nũa thì hãy tải git desktop sau đó chép đường link liên kết của project này vào và clone về
 - Trong file project đã bao gồm cả các file cần thiết của thư viện SDL2 (có bao gồm SDL2_image, SDL2_mixer) nên rất tiện để các bạn link trực tiếp vào project của mình
-- Project được code và build trên Visual Studio 2022, sau khi clone về chỉ cần dùng Local window debugger là game sẽ chạy và tạo file .exe , nếu như các bạn sử dụng IDE khác thì hãy lên mạng và tìm cách build file dành cho IDE đó
+- Project được code và build trên Visual Studio , sau khi clone về chỉ cần dùng Local window debugger là game sẽ chạy và tạo file .exe , nếu như các bạn sử dụng IDE khác thì hãy lên mạng và tìm cách build file dành cho IDE đó
 ## Các kĩ năng áp dụng trong code game
 - Kỹ thuật kiểm tra xử lý va chạm.
 - Kỹ thuật xử lý thời gian.
@@ -35,5 +36,5 @@
 - Vòng lặp, cấu trúc rẽ nhánh,...
 - Thư viện SDL2, SDL_ttf, SĐL_mixer.
 ## Nguồn tham khảo
-- [lazzyfoo](https://lazyfoo.net/tutorials/SDL/)
+- [lazyfoo](https://lazyfoo.net/tutorials/SDL/)
 
