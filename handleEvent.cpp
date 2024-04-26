@@ -25,7 +25,7 @@ void handleEvent(SDL_Event& e)
             break;
         case SDLK_f:
             Bullet bullet;
-            bullet.x = spriteX + (gSprite->w - BULLET_WIDTH - 18);
+            bullet.x = spriteX + (gSprite->w - BULLET_WIDTH - 15);
             bullet.y = spriteY;
             bullets.push_back(bullet);
             Mix_PlayChannel(-1, soundBullet, 0);

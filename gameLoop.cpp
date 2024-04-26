@@ -126,6 +126,7 @@ void gameLoop()
             {
                 backgroundY = 0;
             }
+            
             if (deltaTime >= FRAME_DELAY) {
 
                 if (isMovingLeft && spriteX > 0) 
@@ -274,7 +275,7 @@ void gameLoop()
                 fireBossY += 2;
                 if (checkCollision(spriteX, spriteY, gSprite->w, gSprite->h, fireBossX, fireBossY, FIRE_WIDTH , FIRE_HEIGHT)) 
                 {           
-                      Blood -= 10;    
+                      if(!immortal)  Blood -- ;    
                       //gameOver=true;  
                          
                 }                

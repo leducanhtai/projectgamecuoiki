@@ -39,8 +39,6 @@ void LoadBoss()
         SDL_Rect boss2Rect = { boss2X, boss2Y, 0, 0 };
         SDL_Rect* currentClip = &gBoss2Clips[currentFrame / 3];
         SDL_BlitSurface(gBoss2Image, currentClip, gScreenSurface, &boss2Rect);
-        //SDL_Rect boss2Rect = { boss2X, boss2Y, 0, 0 };
-        //SDL_BlitSurface(gBoss2Image, NULL, gScreenSurface, &boss2Rect);
         createLightImage(boss2X, boss2Y);
     }
     else if(Points >=500 && Points <= 600 && boss3Blood > 0)
@@ -61,7 +59,7 @@ void LoadBoss()
 
 void moveEntity(int& entityX, int& entityDirection, int entityWidth, int screenWidth) 
 {
-    entityX += entityDirection * 1;
+    entityX += entityDirection;
     if (entityX <= 0) 
     {
         entityX = 0;

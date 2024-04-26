@@ -54,7 +54,7 @@ void renderGame(SDL_Surface* gScreenSurface, SDL_Surface* gBackground, SDL_Surfa
     SDL_BlitSurface(gBackground, NULL, gScreenSurface, &backgroundRect);
     SDL_Rect nextBackgroundRect = { 0, backgroundY - SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT };
     SDL_BlitSurface(gBackground, NULL, gScreenSurface, &nextBackgroundRect);
-
+    
     LoadBoss();
     
     if(spawnHP)

@@ -43,6 +43,7 @@ extern Uint32 protectStartTime;
 extern SDL_Window* gWindow;
 extern SDL_Surface* gScreenSurface;
 extern SDL_Surface* gBackground;
+extern SDL_Surface* gBackground2;
 extern SDL_Surface* gSprite;
 extern SDL_Surface* gFallingImage;
 extern SDL_Surface* gBulletImage;
@@ -83,6 +84,7 @@ extern int Points;
 extern int Level;
 extern int currentFrame;
 extern int backgroundY;
+extern int background2Y;
 
 extern int Blood;
 extern int bossX;

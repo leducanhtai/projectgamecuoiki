@@ -23,7 +23,7 @@ int spriteY = SCREEN_HEIGHT - 100;
 
 
 const int BULLET_SPEED = 2;
-const int BULLET_WIDTH = 30;
+const int BULLET_WIDTH = 40;
 const int BULLET_HEIGHT = 30;
 
 
@@ -78,7 +78,6 @@ SDL_Surface* gBoss3Image = NULL;
 SDL_Surface* gLightImage = NULL;
 SDL_Surface* gHPImage = NULL;
 SDL_Surface* gMenu = NULL;
-//SDL_Surface* gGuide = NULL;
 SDL_Surface* gShield = NULL;
 SDL_Surface* gProtect = NULL;
 SDL_Surface* gExplosionImage = NULL;
@@ -104,6 +103,7 @@ int Level = 1;
 
 
 int backgroundY = 0;
+
 int currentFrame = 0;
 bool spawnHP = false;
 
@@ -161,7 +161,7 @@ bool init() {
 
 bool loadMedia() {
     bool success = true;
-    gBackground = SDL_LoadBMP("img/background.bmp");
+    gBackground = SDL_LoadBMP("img/backgroundr.bmp");
     if (gBackground == NULL) {
         printf("Unable to load background image! SDL Error: %s\n", SDL_GetError());
         success = false;
@@ -188,7 +188,7 @@ bool loadMedia() {
 		gSpriteClips[ 2 ].h = 75;
 
     }
-    gBulletImage = SDL_LoadBMP("img/bullet.bmp");
+    gBulletImage = SDL_LoadBMP("img/bulletr.bmp");
     if (gBulletImage == NULL) {
         printf("Unable to load bullet image! SDL Error: %s\n", SDL_GetError());
         success = false;
@@ -298,11 +298,6 @@ bool loadMedia() {
         printf("Unable to load menu image! SDL Error: %s\n", SDL_GetError());
         return false;
     }
-    //gGuide = SDL_LoadBMP("img/hd.bmp");
-    //if (gGuide == NULL) {
-    //    printf("Unable to load guide image! SDL Error: %s\n", SDL_GetError());
-    //    success = false;
-    //}
     gShield = SDL_LoadBMP("img/khien.bmp");
     if (gShield == NULL) {
         printf("Unable to load shield image! SDL Error: %s\n", SDL_GetError());
@@ -404,8 +399,6 @@ void close() {
     gBoss3Image = NULL;
     SDL_FreeSurface(gMenu);
     gMenu = NULL;
-    //SDL_FreeSurface(gGuide);
-    //gGuide = NULL;
     SDL_FreeSurface(gLightImage);
     gLightImage = NULL;
     SDL_FreeSurface(gShield);
